@@ -102,11 +102,136 @@ We can't wait to eat, dance, and make more unforgettable memories with all of ou
         <h1><span style="background-color:tomato;">This is a span title</span></h1>
         <h1><div style="background-color:cyan;"">This is a div title</div></h1>
 
-        <p><span>This is a span sentence.</span></p>
-        <p>This is a div sentence.</p>
+        <p><span style="background-color:tomato;">This is a span sentence.</span></p>
+        <p><div style="background-color:cyan">This is a div sentence.</div></p>
+
+
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. <span style="background-color:tomato;">Earum minus ea officiis? Repudiandae nihil dolore nostrum eligendi assumenda laborum voluptas perferendis ratione blanditiis, ipsam tenetur consequuntur voluptate culpa quasi minima?</span></p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. <div style="background-color:cyan;">Earum minus ea officiis? Repudiandae nihil dolore nostrum eligendi assumenda laborum voluptas perferendis ratione blanditiis, ipsam tenetur consequuntur voluptate culpa quasi minima?</div></p>
 
 
 
+
+        <!--    List and unordered list  -->
+
+        <br>
+        <br>
+        <!-- unordered list -->
+        <h4>groceries</h4>
+        <ul>
+            <li>milk</li>
+            <li>eggs</li>
+            <li>bread</li>
+            <li>coffee supplies</li>
+            <ul>
+                <li>coffee beans</li>
+                <li>creamer</li>
+                <li>sugar</li>
+            </ul>
+        </ul>
+
+
+
+        <!--- ordered list -->'
+        <h4> to do list</h4>
+        <ol>
+            <li>eat breakfast</li>
+            <li>go to class</li>
+            <li>walk your cat</li>
+            <li>go to work</li>
+        </ol>
+
+
+        <br>
+        <br>
+        <!-- description list -->
+        
+
+        <h4>Mythical creatures</h4>
+        <dl style='background-color:lightgreen; border:2px solid'>
+            <dt>dragon</dt>
+            <dd>scaly lizard like creature</dd>
+            <dt>pheonix</dt>
+            <dd>big fire bird</dd>
+            <dt>vampire</dt>
+            <dd>immortal human who drinks blood</dd>
+            <dt>werewolf</dt>
+            <dd>humanoid wolf creature</dd>
+
+        </dl>
+
+
+
+        <!-- table -->
+
+        <br>
+        <br>
+        <br>
+
+
+        <h3>store hours</h3>
+
+        <table border="1" style="background-color:black;">
+            <tr align="center" style="background-color:lightblue">
+                <th width="100">sunday</th>
+                <th width="100">monday</th>
+                <th width="100">tuesday</th>
+                <th width="100">wednesday</th>
+                <th width="100">thursday</th>
+                <th width="100">friday</th>
+                <th width="100">saturday</th>
+            </tr>
+            <tr align="center" style="background-color:aliceblue">
+                <td>closed</td>
+                <td>9-5</td>
+                <td>9-5</td>
+                <td>9-5</td>
+                <td>9-5</td>
+                <td>9-5</td>
+                <td>10-2</td>
+            </tr>
+
+        </table>
+
+        <br>
+        <br>
+        <br>
+        <br>
+
+        <!-- create a button -->
+        <a href="page2.html" target="_blank">
+        
+        <button onclick="doSomething()" style="font-size: 25px; background-color:grey; color:lightblue; border-radius:5px;">click me!</button>
+       
+        <p id="greeting">Hello</p>
+       
+        <script>
+            function doSomething(){
+                document.getElementByID("greeting").innerHTML = "Goodbye"
+            }
+        </script>
+        
+    
+    
+    
+        </a>
+
+        <br>
+        <br>
+        <br>
+
+
+
+
+
+        <!-- form -->
+
+        <form action="index.php" method="POST">
+
+            <label for="username">username:</label>
+            <input type="text" id="username">
+
+        </form>
 
 
         <br>

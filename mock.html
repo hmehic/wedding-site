@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <!-- ============================================================
+         THE VIEWPORT TAG — the single most important line for mobile.
+         Without it, phones pretend to be a 980px desktop and shrink
+         everything down. Never build a page without this.
+         ============================================================ -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Shelby &amp; Hamza — September 5, 2027</title>
+
+    <!-- Favicon. Note it lives in the HEAD, not the body. -->
+    <link rel="icon" href="images/favicon.png" type="image/png">
+
+    <!-- Fonts, loaded from Google. Fraunces is the display face
+         (headings), Karla is the body face. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Karla:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- ============================================================
+         ALL THE CSS LIVES IN THIS <style> BLOCK.
+
+         When you're ready, cut everything between <style> and
+         </style>, paste it into a new file called styles.css, and
+         replace this whole block with one line:
+
+             <link rel="stylesheet" href="styles.css">
+
+         That's the "external stylesheet" pattern. It's better
+         practice because lyrics.html can then share the same file.
+         It's all in here for now so this page works as one file.
+         ============================================================ -->
+    <style>
+
+    /* ------------------------------------------------------------
+       1. CUSTOM PROPERTIES ("CSS variables")
+       Define a color once here, use it everywhere below. Change it
+       here and the whole site updates. Same idea as a variable in
+       Python.
+       ------------------------------------------------------------ */
+    :root {
+        --ink:        #0E1F22;   /* deepest — page background        */
+        --river:      #16333A;   /* mid depth — section backgrounds  */
+        --river-lift: #1E4750;   /* lighter — cards, hover states    */
+        --wheat:      #E9C579;   /* the accent. September fields.    */
+        --wheat-dim:  #C9A45B;   /* accent, quieter                  */
+        --cream:      #F3EEE4;   /* main text                        */
+        --muted:      #8FA8A6;   /* secondary text                   */
+
+        --measure: 62ch;         /* max line length for readability  */
+    }
+
+    /* ------------------------------------------------------------
+       2. RESET + BASE
+       Browsers add their own default margins. This clears them so
+       you're starting from a known state.
+       ------------------------------------------------------------ */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;  /* padding counts INSIDE the width  */
+    }
+
+    body {
+        background: var(--ink);
+        color: var(--cream);
+        font-family: 'Karla', system-ui, sans-serif;
+        font-weight: 300;
+        line-height: 1.7;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    /* Every image: never wider than its container, keep proportions.
+       This one rule fixes most mobile image problems. */
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    /* Keyboard users need to see where they are. Don't remove this. */
+    :focus-visible {
+        outline: 2px solid var(--wheat);
+        outline-offset: 3px;
+    }
+
+    /* ------------------------------------------------------------
+       3. TYPE SCALE
+       clamp(min, preferred, max) — the font shrinks on small screens
+       and grows on large ones, all on its own. No media query needed.
+       ------------------------------------------------------------ */
+    h1, h2, h3 {
+        font-family: 'Fraunces', Georgia, serif;
+        font-weight: 300;
+        line-height: 1.1;
+        letter-spacing: -0.01em;
+    }
+
+    h1 { font-size: clamp(2.8rem, 11vw, 6.5rem); }
+    h2 { font-size: clamp(1.9rem, 5vw, 2.9rem); }
+    h3 { font-size: clamp(1.1rem, 2.5vw, 1.3rem); }
+
+    /* The small uppercase labels above each section. */
+    .eyebrow {
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--wheat-dim);
+        margin-bottom: 0.9rem;
+    }
+
+    /* ------------------------------------------------------------
+       4. LAYOUT HELPERS
+       ------------------------------------------------------------ */
+    .wrap {
+        width: 100%;
+        max-width: 68rem;
+        margin: 0 auto;         /* auto left+right = centered        */
+        padding: 0 1.5rem;
+    }
+
+    section {
+        padding: clamp(4rem, 10vw, 7rem) 0;
+    }
+
+    /* ------------------------------------------------------------
+       5. HERO
+       ------------------------------------------------------------ */
+    .hero {
+        min-height: 92vh;
+        display: flex;              /* flexbox: the main layout tool */
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        position: relative;
+        padding: 5rem 1.5rem 3rem;
+        background:
+            radial-gradient(ellipse 90% 55% at 50% 100%, rgba(233,197,121,0.16), transparent 70%),
+            linear-gradient(180deg, var(--ink) 0%, var(--river) 100%);
+    }
+
+    .hero__names {
+        margin-bottom: 1.6rem;
+    }
+
+    /* The ampersand gets its own treatment — italic, gold, oversized.
+       Small move, but it's the thing people remember. */
+    .amp {
+        font-style: italic;
+        color: var(--wheat);
+        font-weight: 400;
+        display: block;
+        font-size: 0.62em;
+        margin: -0.1em 0;
+    }
+
+    .hero__meta {
+        font-size: clamp(0.82rem, 2vw, 0.95rem);
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: var(--muted);
+        font-weight: 500;
+    }
+
+    .hero__meta span {
+        color: var(--wheat-dim);
+        padding: 0 0.4rem;
+    }
+
+    /* ------------------------------------------------------------
+       6. THE COUNTDOWN — this is what the JavaScript at the bottom
+       of the page fills in. The HTML is just empty boxes until
+       the script runs.
+       ------------------------------------------------------------ */
+    .countdown {
+        display: flex;
+        gap: clamp(1.2rem, 5vw, 3rem);
+        margin-top: 3rem;
+        padding-top: 2.4rem;
+        border-top: 1px solid rgba(243,238,228,0.14);
+    }
+
+    .countdown__unit {
+        text-align: center;
+        min-width: 3.5rem;
+    }
+
+    .countdown__num {
+        font-family: 'Fraunces', serif;
+        font-size: clamp(1.6rem, 5vw, 2.4rem);
+        color: var(--wheat);
+        line-height: 1;
+        display: block;
+    }
+
+    .countdown__label {
+        font-size: 0.62rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-top: 0.5rem;
+        display: block;
+    }
+
+    /* ------------------------------------------------------------
+       7. THE RIVER DIVIDER
+       Pepin sits on the Mississippi, so the section breaks are a
+       wave instead of a straight line. It's an inline SVG, reused.
+       ------------------------------------------------------------ */
+    .river {
+        display: block;
+        width: 100%;
+        height: 28px;
+        color: var(--wheat-dim);
+        opacity: 0.5;
+    }
+
+    /* ------------------------------------------------------------
+       8. STORY SECTION
+       ------------------------------------------------------------ */
+    .story {
+        background: var(--river);
+    }
+
+    .story__body {
+        max-width: var(--measure);
+        margin-top: 2rem;
+        font-size: 1.05rem;
+    }
+
+    .story__body p + p {
+        margin-top: 1.4rem;    /* space between paragraphs, but not
+                                  above the first one               */
+    }
+
+    /* A pull-quote for the breadsticks line. */
+    .pull {
+        font-family: 'Fraunces', serif;
+        font-size: clamp(1.3rem, 3.4vw, 1.9rem);
+        font-style: italic;
+        line-height: 1.35;
+        color: var(--wheat);
+        margin: 2.6rem 0;
+        padding-left: 1.4rem;
+        border-left: 2px solid var(--wheat-dim);
+        max-width: 34ch;
+    }
+
+    /* ------------------------------------------------------------
+       9. THE DAY — a responsive grid of detail cards
+       ------------------------------------------------------------ */
+    .details {
+        display: grid;
+        /* auto-fit + minmax = cards reflow on their own. Three across
+           on desktop, one across on a phone, no media query needed. */
+        grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+        gap: 1.5rem;
+        margin-top: 2.5rem;
+    }
+
+    .card {
+        background: var(--river-lift);
+        border: 1px solid rgba(233,197,121,0.16);
+        padding: 1.8rem 1.6rem;
+    }
+
+    .card h3 {
+        color: var(--wheat);
+        margin-bottom: 0.6rem;
+    }
+
+    .card p {
+        color: var(--muted);
+        font-size: 0.95rem;
+    }
+
+    /* ------------------------------------------------------------
+       10. PHOTOS
+       These are placeholder blocks so the page looks finished right
+       now. To use a real photo, replace the whole <div> with:
+           <img src="images/IMG_1300.JPG" alt="Shelby and Hamza">
+       ------------------------------------------------------------ */
+    .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+        gap: 1rem;
+        margin-top: 2.5rem;
+    }
+
+    .photo {
+        aspect-ratio: 4 / 5;
+        background: linear-gradient(145deg, var(--river-lift), var(--ink));
+        border: 1px solid rgba(233,197,121,0.14);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--muted);
+        font-size: 0.7rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        text-align: center;
+        padding: 1rem;
+    }
+
+    /* ------------------------------------------------------------
+       11. CATS
+       ------------------------------------------------------------ */
+    .cats {
+        background: var(--river);
+    }
+
+    .cats__row {
+        display: flex;
+        flex-wrap: wrap;        /* wrap onto a new line if too narrow */
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .cat {
+        flex: 1 1 12rem;
+        border-top: 1px solid rgba(233,197,121,0.2);
+        padding-top: 1rem;
+    }
+
+    .cat h3 { color: var(--wheat); }
+    .cat p  { color: var(--muted); font-size: 0.92rem; }
+
+    /* ------------------------------------------------------------
+       12. LINKS + BUTTONS
+       ------------------------------------------------------------ */
+    .links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 2.5rem;
+    }
+
+    .btn {
+        display: inline-block;
+        font-family: 'Karla', sans-serif;
+        font-size: 0.78rem;
+        font-weight: 600;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        text-decoration: none;
+        padding: 1rem 1.9rem;
+        border: 1px solid var(--wheat-dim);
+        color: var(--wheat);
+        /* transition = animate the change instead of snapping */
+        transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    .btn:hover {
+        background: var(--wheat);
+        color: var(--ink);
+    }
+
+    .btn--solid {
+        background: var(--wheat);
+        color: var(--ink);
+    }
+
+    .btn--solid:hover {
+        background: transparent;
+        color: var(--wheat);
+    }
+
+    /* ------------------------------------------------------------
+       13. SONG
+       ------------------------------------------------------------ */
+    .song {
+        text-align: center;
+    }
+
+    .song audio {
+        margin: 1.8rem auto 0;
+        width: min(100%, 26rem);
+    }
+
+    .song__title {
+        font-family: 'Fraunces', serif;
+        font-style: italic;
+        font-size: clamp(1.4rem, 4vw, 2rem);
+        color: var(--wheat);
+        margin-top: 0.5rem;
+    }
+
+    .song__artist {
+        color: var(--muted);
+        font-size: 0.85rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        margin-top: 0.6rem;
+    }
+
+    /* ------------------------------------------------------------
+       14. FOOTER
+       ------------------------------------------------------------ */
+    footer {
+        background: var(--river);
+        text-align: center;
+        padding: 4rem 1.5rem;
+    }
+
+    footer .amp-mark {
+        font-family: 'Fraunces', serif;
+        font-style: italic;
+        font-size: 2.6rem;
+        color: var(--wheat);
+    }
+
+    footer p {
+        color: var(--muted);
+        font-size: 0.82rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        margin-top: 1rem;
+    }
+
+    /* ------------------------------------------------------------
+       15. MEDIA QUERY
+       Everything above uses clamp() and auto-fit grids, so it's
+       mostly responsive already. This handles the few things that
+       still need a nudge on small phones.
+       ------------------------------------------------------------ */
+    @media (max-width: 34rem) {
+        .countdown {
+            gap: 1rem;
+            width: 100%;
+            justify-content: space-between;
+        }
+        .links { flex-direction: column; }
+        .btn   { text-align: center; }
+        .pull  { padding-left: 1rem; margin: 2rem 0; }
+    }
+
+    /* Some people turn animations off at the OS level for motion
+       sickness. Respect that. */
+    @media (prefers-reduced-motion: reduce) {
+        * {
+            transition-duration: 0.01ms !important;
+            animation-duration: 0.01ms !important;
+        }
+    }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- ================= HERO ================= -->
+    <header class="hero">
+        <h1 class="hero__names">
+            Shelby
+            <span class="amp">&amp;</span>
+            Hamza
+        </h1>
+
+        <p class="hero__meta">
+            September 5, 2027 <span>&middot;</span> Pepin, Wisconsin
+        </p>
+
+        <!-- These spans start empty. The JavaScript at the bottom
+             of this file fills in the numbers. -->
+        <div class="countdown" aria-label="Countdown to the wedding">
+            <div class="countdown__unit">
+                <span class="countdown__num" id="days">—</span>
+                <span class="countdown__label">Days</span>
+            </div>
+            <div class="countdown__unit">
+                <span class="countdown__num" id="hours">—</span>
+                <span class="countdown__label">Hours</span>
+            </div>
+            <div class="countdown__unit">
+                <span class="countdown__num" id="minutes">—</span>
+                <span class="countdown__label">Minutes</span>
+            </div>
+            <div class="countdown__unit">
+                <span class="countdown__num" id="seconds">—</span>
+                <span class="countdown__label">Seconds</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- The river divider. It's the Mississippi, sort of. -->
+    <svg class="river" viewBox="0 0 1200 28" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0,14 C100,4 200,24 300,14 C400,4 500,24 600,14 C700,4 800,24 900,14 C1000,4 1100,24 1200,14"
+              fill="none" stroke="currentColor" stroke-width="1.5"/>
+    </svg>
+
+    <!-- ================= STORY ================= -->
+    <section class="story">
+        <div class="wrap">
+            <p class="eyebrow">How it started</p>
+            <h2>Our story</h2>
+
+            <div class="story__body">
+                <p>
+                    It started at Olive Garden, when we were 16 and 17.
+                    We showed up expecting to earn a paycheck. Instead we
+                    accidentally met the person we'd spend the rest of our
+                    lives with.
+                </p>
+
+                <p class="pull">
+                    Who knew unlimited breadsticks would come with a soulmate?
+                </p>
+
+                <p>
+                    Life has changed a lot since we met as teenagers, but one
+                    thing never did — we've always been each other's favorite
+                    person to laugh with. We've cheered each other on, laughed
+                    through the chaos, and learned that life is a lot more fun
+                    when your best friend is along for the ride.
+                </p>
+
+                <p>
+                    After eight years of adventures, countless memories, and
+                    asking each other "what's for dinner?" a few thousand
+                    times, we got engaged. We're so excited to finally make it
+                    official and start our next chapter.
+                </p>
+
+                <p>
+                    Thank you for being here to celebrate with us. We can't
+                    wait to eat, dance, and make more unforgettable memories
+                    with all of our favorite people.
+                </p>
+            </div>
+
+            <!-- Placeholder photos. Swap each <div class="photo"> for a
+                 real <img src="images/yourphoto.jpg" alt="..."> tag. -->
+            <div class="gallery">
+                <div class="photo">Photo 1<br>replace me</div>
+                <div class="photo">Photo 2<br>replace me</div>
+                <div class="photo">Photo 3<br>replace me</div>
+            </div>
+        </div>
+    </section>
+
+    <svg class="river" viewBox="0 0 1200 28" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0,14 C100,24 200,4 300,14 C400,24 500,4 600,14 C700,24 800,4 900,14 C1000,24 1100,4 1200,14"
+              fill="none" stroke="currentColor" stroke-width="1.5"/>
+    </svg>
+
+    <!-- ================= THE DAY ================= -->
+    <section>
+        <div class="wrap">
+            <p class="eyebrow">The details</p>
+            <h2>The day</h2>
+
+            <div class="details">
+                <div class="card">
+                    <h3>When</h3>
+                    <p>Sunday, September 5, 2027<br>Ceremony at 4:00 PM</p>
+                </div>
+                <div class="card">
+                    <h3>Where</h3>
+                    <p>Pepin, Wisconsin<br>On the Mississippi</p>
+                </div>
+                <div class="card">
+                    <h3>What to wear</h3>
+                    <p>Semi-formal. Early September on the river — bring a layer for the evening.</p>
+                </div>
+                <div class="card">
+                    <h3>Getting there</h3>
+                    <p>About 90 minutes southeast of the Twin Cities. Parking on site.</p>
+                </div>
+                <div class="card">
+                    <h3>Staying over</h3>
+                    <p>Room blocks coming soon. We'll post them here first.</p>
+                </div>
+                <div class="card">
+                    <h3>Questions</h3>
+                    <p>Ask us anything — the email button is below.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <svg class="river" viewBox="0 0 1200 28" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0,14 C100,4 200,24 300,14 C400,4 500,24 600,14 C700,4 800,24 900,14 C1000,4 1100,24 1200,14"
+              fill="none" stroke="currentColor" stroke-width="1.5"/>
+    </svg>
+
+    <!-- ================= CATS ================= -->
+    <section class="cats">
+        <div class="wrap">
+            <p class="eyebrow">The household</p>
+            <h2>Also in attendance (in spirit)</h2>
+
+            <div class="cats__row">
+                <div class="cat">
+                    <h3>Cat one</h3>
+                    <p>Believes the house is hers. Permits the wedding on the condition that treats continue.</p>
+                </div>
+                <div class="cat">
+                    <h3>Cat two</h3>
+                    <p>Has strong opinions about the seating chart. Was not consulted.</p>
+                </div>
+                <div class="cat">
+                    <h3>Cat three</h3>
+                    <p>Supervising. Always supervising.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <svg class="river" viewBox="0 0 1200 28" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0,14 C100,24 200,4 300,14 C400,24 500,4 600,14 C700,24 800,4 900,14 C1000,24 1100,4 1200,14"
+              fill="none" stroke="currentColor" stroke-width="1.5"/>
+    </svg>
+
+    <!-- ================= SONG ================= -->
+    <section class="song">
+        <div class="wrap">
+            <p class="eyebrow">Our song</p>
+            <p class="song__title">End of August</p>
+            <p class="song__artist">Noah Kahan</p>
+
+            <!-- Point the src at your own audio file. Keep the repo
+                 private if it's a copyrighted track. -->
+            <audio controls>
+                <source src="audio/our-song.mp3" type="audio/mpeg">
+                Your browser doesn't support the audio player.
+            </audio>
+        </div>
+    </section>
+
+    <!-- ================= LINKS ================= -->
+    <section>
+        <div class="wrap" style="text-align:center;">
+            <p class="eyebrow">Before you go</p>
+            <h2>A few things</h2>
+
+            <div class="links" style="justify-content:center;">
+                <a class="btn btn--solid" href="#">Honeymoon fund</a>
+                <a class="btn" href="lyrics.html">Our song</a>
+                <a class="btn" href="mailto:hmehic13@gmail.com">Email us</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <footer>
+        <p class="amp-mark">&amp;</p>
+        <p>Shelby &amp; Hamza &middot; 09.05.2027 &middot; Pepin, WI</p>
+    </footer>
+
+
+    <!-- ============================================================
+         THE JAVASCRIPT.
+
+         Notice it sits at the BOTTOM, just before </body>. That's
+         deliberate — the browser reads top to bottom, so by the time
+         this runs, all the countdown boxes above already exist. If
+         this were up in the <head>, it would look for #days, find
+         nothing, and error.
+
+         When you're ready, cut this into a file called script.js and
+         replace it with:  <script src="script.js"></script>
+         ============================================================ -->
+    <script>
+
+        // The date we're counting down to. Months are ZERO-indexed in
+        // JavaScript, so 8 = September. (Yes, that's confusing. Yes,
+        // everyone gets caught by it once.)
+        const weddingDay = new Date(2027, 8, 5, 16, 0, 0);
+
+        // Grab the four boxes from the HTML above, once, up front.
+        const boxes = {
+            days:    document.getElementById('days'),
+            hours:   document.getElementById('hours'),
+            minutes: document.getElementById('minutes'),
+            seconds: document.getElementById('seconds')
+        };
+
+        function updateCountdown() {
+            const now = new Date();
+            let gap = weddingDay - now;   // difference in milliseconds
+
+            if (gap < 0) {
+                // The day has arrived (or passed).
+                boxes.days.textContent = boxes.hours.textContent =
+                boxes.minutes.textContent = boxes.seconds.textContent = '0';
+                return;
+            }
+
+            // Convert milliseconds into each unit.
+            const second = 1000;
+            const minute = second * 60;
+            const hour   = minute * 60;
+            const day    = hour * 24;
+
+            boxes.days.textContent    = Math.floor(gap / day);
+            boxes.hours.textContent   = Math.floor((gap % day) / hour);
+            boxes.minutes.textContent = Math.floor((gap % hour) / minute);
+            boxes.seconds.textContent = Math.floor((gap % minute) / second);
+        }
+
+        updateCountdown();              // run once immediately
+        setInterval(updateCountdown, 1000);  // then again every second
+
+    </script>
+
+</body>
+</html>
