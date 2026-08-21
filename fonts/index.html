@@ -59,6 +59,22 @@
            opacity: 0; }
 }
 
+/* Skip button, so nobody is stuck waiting for the animation. */
+.skip {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font: inherit;
+    font-size: 0.8rem;
+    padding: 0.5rem 1.2rem;
+    cursor: pointer;
+    z-index: 2;
+}
+
 /* Your whole page lives inside .page and fades in. */
 .page {
     opacity: 0;
@@ -105,7 +121,7 @@ img {
 .story p { margin-bottom: 1rem; }
 
 /* ============================================================
-   ASTON SCRIPT — a self-hosted font.
+   FUNKY SIGNATURE — a self-hosted font.
 
    Google Fonts doesn't have this one, so the file lives in your
    own fonts/ folder.
@@ -115,66 +131,25 @@ img {
    OTF is there as a backup for anything very old.
    ============================================================ */
 @font-face {
-    font-family: 'Aston Script';
-    src: url('fonts/AstonScript.woff') format('woff'),
-         url('fonts/AstonScript.ttf') format('truetype');
+    font-family: 'Funky Signature';
+    src: url('fonts/FunkySignature.woff') format('woff'),
+         url('fonts/FunkySignature.otf') format('opentype');
     font-weight: 400;
     font-style: normal;
     font-display: swap;   /* show fallback text while it loads */
 }
 
-/* The names. If Aston Script hasn't loaded, the fallbacks kick
-   in — Brush Script before cursive, so you never land on Comic
-   Sans by accident. */
+/* The names. If Funky Signature hasn't loaded, it falls back to
+   any script font the browser has. */
 h1 {
-    font-family: 'Aston Script', 'Brush Script MT', Georgia, serif;
+    font-family: 'Funky Signature', cursive;
     font-weight: 400;
-
-    /* Smaller than before. This font only comes in a bold weight,
-       and thick strokes get heavier the larger you set them —
-       which is why it looks thinner in the dafont preview. */
-    font-size: clamp(2.2rem, 8vw, 3.5rem);
-    line-height: 1.2;
+    font-size: clamp(3rem, 12vw, 5.5rem);
+    line-height: 1.15;
     margin: 0 0 1rem;
-
-    /* Paints a hairline of the background color along each letter's
-       edge, eating into the strokes so they read lighter. Raise the
-       px value to thin it further, lower it to keep more weight.
-       If you ever change the page background, change this to match. */
-    -webkit-text-stroke: 0.6px #fff;
 }
 
 a { color: #b3243a; }
-
-/* The navigation menu. flex puts the links in a row; wrap lets
-   them drop to a second line on narrow phones. */
-.nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    margin: 1.5rem 0 2.5rem;
-    padding-bottom: 1.25rem;
-    border-bottom: 1px solid #ddd;
-}
-
-.nav a {
-    font-size: 0.8rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    text-decoration: none;
-    color: #6b6b6b;
-}
-
-.nav a:hover { color: #b3243a; }
-
-/* The page you're currently on gets marked. This targets the
-   aria-current attribute, so the styling and the accessibility
-   information stay in sync automatically. */
-.nav a[aria-current="page"] {
-    color: #b3243a;
-    border-bottom: 1px solid #b3243a;
-    padding-bottom: 2px;
-}
 
 .links a { display: inline-block; margin: 0.4rem 1rem 0.4rem 0; }
 
@@ -197,7 +172,9 @@ a { color: #b3243a; }
 <body>
 
 <!-- The overlay. JavaScript fills it with hearts. -->
-<div class="intro" id="intro"></div>
+<div class="intro" id="intro">
+    <button class="skip" id="skip">Skip</button>
+</div>
 
 
 <!-- ============================================================
@@ -215,16 +192,9 @@ a { color: #b3243a; }
     <!-- &amp; is the correct way to write & in HTML. -->
     <h1>Shelby &amp; Hamza</h1>
 
-    <!-- Site navigation. <nav> is a real HTML tag that tells screen
-         readers and search engines "this is the menu."
-         aria-current="page" marks which page you're on. -->
-    <nav class="nav">
-        <a href="index.html" aria-current="page">Home</a>
-        <a href="schedule.html">Schedule</a>
-        <a href="lodging.html">Lodging</a>
-        <a href="registry.html">Registry</a>
-        <a href="faqs.html">FAQs</a>
-    </nav>
+    <hr>
+
+    <p>We are getting married</p>
 
     <img class="couple-photo"
          src="images/IMG_1300.JPG"
@@ -315,40 +285,11 @@ const page  = document.getElementById('page');
 
 
 // ============================================================
-// ONLY PLAY ONCE PER VISIT
-//
-// sessionStorage is a small note the browser keeps for this tab.
-// It survives page navigation, so clicking Home from Schedule
-// won't replay the animation — but it's wiped when the tab is
-// closed, so a real new visit gets the full intro.
-//
-// (localStorage would remember forever, which is too sticky.)
-//
-// The try/catch is there because some privacy settings block
-// storage entirely. If it throws, we just play the animation
-// rather than breaking the page.
-// ============================================================
-let alreadySeen = false;
-try {
-    alreadySeen = sessionStorage.getItem('introSeen') === 'yes';
-    sessionStorage.setItem('introSeen', 'yes');
-} catch (e) {
-    alreadySeen = false;
-}
-
-if (alreadySeen) {
-    // Skip straight to the page: no hearts, no fade, no delay.
-    intro.remove();
-    page.classList.add('is-visible');
-}
-
-
-// ============================================================
 // BUILD THE HEARTS
 // One loop, one <img> per heart, all values randomized so no
 // two fall the same way.
 // ============================================================
-if (!alreadySeen) for (let i = 0; i < HEART_COUNT; i++) {
+for (let i = 0; i < HEART_COUNT; i++) {
     const h = document.createElement('img');
     h.className = 'heart';
     h.src = HEART_SRC;
@@ -378,7 +319,8 @@ function reveal() {
     setTimeout(function () { intro.remove(); }, 1000);
 }
 
-if (!alreadySeen) setTimeout(reveal, SHOWER_MS);
+setTimeout(reveal, SHOWER_MS);
+document.getElementById('skip').addEventListener('click', reveal);
 
 </script>
 
