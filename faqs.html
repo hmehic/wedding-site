@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registry — Shelby &amp; Hamza</title>
+    <title>FAQs — Shelby &amp; Hamza</title>
 
     <link rel="icon" type="image/png"
           href="images/174-1746878_ios-emoji-emoji-iphone-ios-heart-hearts-spin.png">
@@ -89,72 +89,17 @@ a { color: #b3243a; }
     padding-bottom: 2px;
 }
 
-h2 { font-size: 1.4rem; margin-bottom: 1rem; text-align: center; }
+h2 { font-size: 1.4rem; margin-bottom: 1.5rem; text-align: center; }
 
-.intro {
-    text-align: center;
-    max-width: 32rem;
-    margin: 0 auto 3rem;
-    font-size: 0.95rem;
-}
+.faq { text-align: center; }
 
-.gifts {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-}
-
-@media (max-width: 40rem) {
-    .gifts { grid-template-columns: 1fr; }
-}
-
-.gift {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    border: 1px solid #ddd;
-    border-radius: 3px;
-    padding: 1.75rem 1.25rem;
-}
-
-.gift h3 {
+.faq h3 {
     font-size: 1.05rem;
-    margin: 0 0 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
-.gift .handle {
-    margin: 0 0 1.25rem;
-    font-size: 0.9rem;
-    color: #6b6b6b;
-    word-break: break-word;
-}
-
-.gift .hint {
-    margin: 0.75rem 0 0;
-    font-size: 0.78rem;
-    color: #999;
-}
-
-.send {
-    margin-top: auto;
-    align-self: center;
-    font-family: inherit;
-    font-size: 0.8rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    text-decoration: none;
-    padding: 0.55rem 1.3rem;
-    border: 1px solid #333;
-    border-radius: 3px;
-    background: #fff;
-    color: #333;
-    cursor: pointer;
-}
-
-.send:hover { background: #f2f2f2; }
-
-.send-alt {
-    margin-top: 0.6rem;
+.faq h3 + p {
+    margin: 0 0 3.25rem;
 }
 
 .placeholder { color: #6b6b6b; }
@@ -175,67 +120,55 @@ h2 { font-size: 1.4rem; margin-bottom: 1rem; text-align: center; }
         <a href="index.html">Home</a>
         <a href="schedule.html">Schedule</a>
         <a href="lodging.html">Lodging</a>
-        <a href="registry.html" aria-current="page">Registry</a>
-        <a href="faqs.html">FAQs</a>
+        <a href="registry.html">Registry</a>
+        <a href="faqs.html" aria-current="page">FAQs</a>
     </nav>
 
-    <h2>Registry</h2>
+    <h2>FAQs</h2>
 
-    <p class="intro">
-        Your presence is the gift, but if you'd like to
-        contribute to our honeymoon fund, here are a few ways.
-    </p>
+    <div class="faq">
 
-    <div class="gifts">
+        <h3>What is the dress code?</h3>
+        <p>
+            We'd love for our guests to dress in dressy-casual attire.
+            We suggest dresses or jumpsuits for women and dress pants
+            with a button-down shirt for men. Both the ceremony and
+            reception will be outside. Please, no jeans.
+        </p>
 
-        <div class="gift">
-            <h3>Venmo</h3>
-            <p class="handle">&#64;ShelbyFloe14</p>
-            <a class="send"
-               href="https://venmo.com/u/ShelbyFloe14"
-               target="_blank" rel="noopener">Send with Venmo</a>
-        </div>
+        <h3>Can I bring a plus one?</h3>
+        <p>
+            To ensure we can accommodate all our beloved guests, only
+            those explicitly named on your invitation are included.
+            Thank you for understanding!
+        </p>
 
-        <div class="gift">
-            <h3>Zelle</h3>
-            <p class="handle" id="zelleNum">612-709-7186</p>
+        <h3>Are kids welcome?</h3>
+        <p>
+            We've decided to keep the reception as an adults-only
+            celebration, allowing all our guests to enjoy an evening
+            together without children present.
+        </p>
 
-            <button class="send" id="zelleCopy">Copy number</button>
+        <h3>Do you have any hotel recommendations?</h3>
+        <p>
+            Yes! Please refer to the lodging tab for recommendations.
+        </p>
 
-            <a class="send send-alt"
-               href="https://www.zellepay.com/get-started"
-               target="_blank" rel="noopener">Find your bank</a>
+        <h3>I have a food allergy, can I make a special request?</h3>
+        <p>
+            Yes, we are happy to accommodate most food allergies and
+            dietary restrictions! Please ensure you let us know in
+            advance.
+        </p>
 
-            <p class="hint">Send through your bank's app or website.</p>
-        </div>
-
-        <div class="gift">
-            <h3>PayPal</h3>
-            <p class="handle">paypal.me/1okaymar</p>
-            <a class="send"
-               href="https://paypal.me/1okaymar"
-               target="_blank" rel="noopener">Send with PayPal</a>
-        </div>
+        <h3>I still have questions, what is the best way to contact you?</h3>
+        <p>
+            For any questions or concerns, please refer to the hosts'
+            contact information on your invitation.
+        </p>
 
     </div>
-
-<script>
-
-document.getElementById('zelleCopy').addEventListener('click', function () {
-    const btn = this;
-    const number = document.getElementById('zelleNum').textContent.trim();
-
-    navigator.clipboard.writeText(number).then(function () {
-        btn.textContent = 'Copied';
-        setTimeout(function () { btn.textContent = 'Copy number'; }, 2000);
-    }).catch(function () {
-
-        btn.textContent = 'Copy failed';
-        setTimeout(function () { btn.textContent = 'Copy number'; }, 2000);
-    });
-});
-
-</script>
 
 </body>
 </html>
