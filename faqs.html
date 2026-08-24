@@ -80,7 +80,22 @@ a { color: #b3243a; }
     padding-bottom: 2px;
 }
 
-h2 { font-size: 1.4rem; margin-bottom: 0.5rem; }
+h2 { font-size: 1.4rem; margin-bottom: 1.5rem; text-align: center; }
+
+/* Centers the questions and answers. */
+.faq { text-align: center; }
+
+/* Questions and answers. The + selector means "a p that comes
+   directly after an h3", so answers sit tight under their
+   question while the gap before the next question stays wide. */
+.faq h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+}
+
+.faq h3 + p {
+    margin: 0 0 3.25rem;
+}
 
 .placeholder { color: #6b6b6b; }
 
@@ -104,9 +119,53 @@ h2 { font-size: 1.4rem; margin-bottom: 0.5rem; }
         <a href="faqs.html" aria-current="page">FAQs</a>
     </nav>
 
-    <!-- Replace everything below with your real content. -->
     <h2>FAQs</h2>
-    <p class="placeholder">Coming soon.</p>
+
+    <!-- Each question is an <h3> and its answer a <p>. To add another
+         one, copy a pair and change the text. -->
+    <div class="faq">
+
+        <h3>What is the dress code?</h3>
+        <p>
+            We'd love for our guests to dress in dressy-casual attire.
+            We suggest dresses or jumpsuits for women and dress pants
+            with a button-down shirt for men. Both the ceremony and
+            reception will be outside. Please, no jeans.
+        </p>
+
+        <h3>Can I bring a plus one?</h3>
+        <p>
+            To ensure we can accommodate all our beloved guests, only
+            those explicitly named on your invitation are included.
+            Thank you for understanding!
+        </p>
+
+        <h3>Are kids welcome?</h3>
+        <p>
+            We've decided to keep the reception as an adults-only
+            celebration, allowing all our guests to enjoy an evening
+            together without children present.
+        </p>
+
+        <h3>Do you have any hotel recommendations?</h3>
+        <p>
+            Yes! Please refer to the lodging tab for recommendations.
+        </p>
+
+        <h3>I have a food allergy, can I make a special request?</h3>
+        <p>
+            Yes, we are happy to accommodate most food allergies and
+            dietary restrictions! Please ensure you let us know in
+            advance.
+        </p>
+
+        <h3>I still have questions, what is the best way to contact you?</h3>
+        <p>
+            For any questions or concerns, please refer to the hosts'
+            contact information on your invitation.
+        </p>
+
+    </div>
 
 </body>
 </html>
