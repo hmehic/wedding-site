@@ -80,7 +80,88 @@ a { color: #b3243a; }
     padding-bottom: 2px;
 }
 
-h2 { font-size: 1.4rem; margin-bottom: 0.5rem; }
+h2 { font-size: 1.4rem; margin-bottom: 1rem; text-align: center; }
+
+.intro {
+    text-align: center;
+    max-width: 32rem;
+    margin: 0 auto 3rem;
+    font-size: 0.95rem;
+}
+
+/* ---- lodging ---- */
+
+/* Two columns, which gives a 2x2 block with four cards.
+   1fr 1fr means "split the width evenly between two columns". */
+.stays {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+/* On a narrow phone, two columns get cramped — drop to one. */
+@media (max-width: 34rem) {
+    .stays { grid-template-columns: 1fr; }
+}
+
+/* flex-direction: column with margin-top:auto on the button keeps
+   every View button aligned at the bottom, even when the cards
+   have different amounts of text. */
+.stay {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 1.5rem 1.25rem;
+}
+
+/* A simple bed icon, drawn with SVG rather than an image file —
+   nothing to download, and it stays crisp at any size.
+   currentColor means it inherits whatever text color is set. */
+.stay-icon {
+    width: 30px;
+    height: 30px;
+    align-self: center;
+    margin-bottom: 0.75rem;
+    color: #999;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.stay h3 {
+    font-size: 1.05rem;
+    margin: 0 0 0.6rem;
+}
+
+.stay .addr {
+    margin: 0 0 0.6rem;
+    font-size: 0.9rem;
+}
+
+.stay .dist {
+    margin: 0 0 1.25rem;
+    font-size: 0.85rem;
+    color: #6b6b6b;
+}
+
+.book {
+    margin-top: auto;
+    align-self: center;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.5rem 1.4rem;
+    border: 1px solid #333;
+    border-radius: 3px;
+    color: #333;
+}
+
+.book:hover { background: #f2f2f2; }
 
 .placeholder { color: #6b6b6b; }
 
@@ -104,9 +185,71 @@ h2 { font-size: 1.4rem; margin-bottom: 0.5rem; }
         <a href="faqs.html">FAQs</a>
     </nav>
 
-    <!-- Replace everything below with your real content. -->
     <h2>Lodging</h2>
-    <p class="placeholder">Coming soon.</p>
+
+    <p class="intro">
+        For more local lodging options, please view the
+        <a href="https://www.hiddenmeadowandbarn.com/local-lodging"
+           target="_blank" rel="noopener">venue's website</a>.
+    </p>
+
+    <!-- Each hotel is one .stay block. Copy a whole block to add
+         another; the grid arranges them automatically. -->
+    <div class="stays">
+
+        <div class="stay">
+            <svg class="stay-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 7v11M3 14h18M21 18v-8a2 2 0 0 0-2-2h-8v6"/>
+                <circle cx="7" cy="10" r="1.6"/>
+            </svg>
+            <h3>Pepin Valley Cabins LLC</h3>
+            <p class="addr">Pepin, WI</p>
+            <p class="dist">Next door to the wedding property &mdash; if you want to stay close.</p>
+            <a class="book"
+               href="https://www.facebook.com/people/Pepin-Valley-Cabins-LLC/100063291336744/"
+               target="_blank" rel="noopener">View</a>
+        </div>
+
+        <div class="stay">
+            <svg class="stay-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 7v11M3 14h18M21 18v-8a2 2 0 0 0-2-2h-8v6"/>
+                <circle cx="7" cy="10" r="1.6"/>
+            </svg>
+            <h3>Pepin Motel</h3>
+            <p class="addr">305 Elm Street<br>Pepin, WI 54759</p>
+            <p class="dist">11 minutes from the venue</p>
+            <a class="book"
+               href="https://www.pepinmotel.com/"
+               target="_blank" rel="noopener">View</a>
+        </div>
+
+        <div class="stay">
+            <svg class="stay-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 7v11M3 14h18M21 18v-8a2 2 0 0 0-2-2h-8v6"/>
+                <circle cx="7" cy="10" r="1.6"/>
+            </svg>
+            <h3>Coffee Mill Inn &amp; Suites</h3>
+            <p class="addr">50 Coulee Way<br>Wabasha, MN 55981</p>
+            <p class="dist">23 minutes from the venue</p>
+            <a class="book"
+               href="https://www.coffeemillinn.com/"
+               target="_blank" rel="noopener">View</a>
+        </div>
+
+        <div class="stay">
+            <svg class="stay-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 7v11M3 14h18M21 18v-8a2 2 0 0 0-2-2h-8v6"/>
+                <circle cx="7" cy="10" r="1.6"/>
+            </svg>
+            <h3>AmericInn by Wyndham Wabasha</h3>
+            <p class="addr">150 Commerce Street<br>Wabasha, MN 55981</p>
+            <p class="dist">22 minutes from the venue</p>
+            <a class="book"
+               href="https://www.wyndhamhotels.com/americinn/wabasha-minnesota/americinn-lodge-and-suites-wabasha/overview?CID=LC:div7epuxsaire17:52001&amp;iata=00093796"
+               target="_blank" rel="noopener">View</a>
+        </div>
+
+    </div>
 
 </body>
 </html>
