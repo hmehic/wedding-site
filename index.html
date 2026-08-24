@@ -82,6 +82,7 @@
    ============================================================ */
 
 body {
+    overflow-x: hidden;   /* stops 100vw causing a sideways scrollbar */
     font-family: Georgia, 'Times New Roman', serif;
     line-height: 1.6;
     max-width: 45rem;          /* stops text stretching too wide */
@@ -96,13 +97,85 @@ img {
     height: auto;
 }
 
-.couple-photo { width: 20rem; }
-.heart-gif    { width: 3rem;  }
+.heart-gif { width: 3rem; }
+
+/* ---- scrolling photo row ---- */
+
+/* FULL WIDTH. The page content sits in a centered 45rem column, so
+   to span the whole window this has to break out of it. 100vw is the
+   full window width; the negative margin pulls it to the left edge. */
+.marquee {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    overflow: hidden;
+    font-size: 0;   /* kills whitespace between inline images */
+}
+
+/* One long row. It holds two identical copies of the photo set, so
+   animating it to -50% lands exactly where it started. */
+.marquee__track {
+    display: flex;
+    width: max-content;
+    animation: scroll-left 48s linear infinite;
+}
+
+@keyframes scroll-left {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+}
+
+/* Fixed height, automatic width — so each photo keeps its own shape.
+   The portrait ring shot stays narrow, the wide ones stay wide. */
+.ph {
+    height: 30rem;
+    width: auto;
+    flex-shrink: 0;
+    display: block;   /* removes the small gap browsers add under images */
+    object-fit: cover;
+}
+
+@media (max-width: 34rem) {
+    .ph { height: 18rem; }
+    .marquee__track { animation-duration: 34s; }
+}
+
+/* If someone's system asks for less motion, stop the scroll and let
+   them swipe through by hand instead. */
+@media (prefers-reduced-motion: reduce) {
+    .marquee { overflow-x: auto; }
+    .marquee__track { animation: none; }
+}
 
 /* REPLACES <pre>. Your story was inside a <pre> tag, which keeps
-   your exact line breaks — and on a phone that forces sideways
+   your exact line breaks, and on a phone that forces sideways
    scrolling. Normal paragraphs wrap to fit any screen. */
-.story p { margin-bottom: 1rem; }
+.story {
+    text-align: center;
+    max-width: 36rem;    /* narrower column reads better when centered */
+    margin: 0 auto;
+}
+
+.story p {
+    margin-bottom: 1.5rem;
+
+    /* Evens out the line lengths so each paragraph forms a tidy
+       shape instead of ending on one short orphan line. Browsers
+       that don't support it just wrap normally. */
+    text-wrap: balance;
+}
+
+/* Centers the "Our story" heading. */
+.page h2 { text-align: center; }
+
+/* Images are block-level, so text-align won't move them.
+   margin: auto on the left and right is what centers a block. */
+.heart-gif {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* The gif sits inside a <p>, so center that too. */
+.gif-wrap { text-align: center; }
 
 /* ============================================================
    ASTON SCRIPT — a self-hosted font.
@@ -178,7 +251,13 @@ a { color: #b3243a; }
     padding-bottom: 2px;
 }
 
-.links a { display: inline-block; margin: 0.4rem 1rem 0.4rem 0; }
+/* Single link, centered at the bottom of the page. */
+.links {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.links a { display: inline-block; }
 
 /* Date and location, sitting together at the top left.
    flex puts them on one row; gap is the space between them. */
@@ -245,11 +324,39 @@ a { color: #b3243a; }
         <a href="faqs.html">FAQs</a>
     </nav>
 
-    <img class="couple-photo"
-         src="images/IMG_1300.JPG"
-         alt="Shelby and Hamza">
+    <!-- Slideshow. All four photos are stacked on top of each other;
+         only the one with .is-active is visible, and the JavaScript
+         at the bottom moves that class along. -->
+    <!-- A continuously scrolling row of photos.
 
-    <p>
+         The four photos are listed TWICE. The row scrolls left until
+         it has moved exactly half its width, at which point the
+         second copy is sitting precisely where the first one started
+         so the jump back to zero is invisible. That's what makes the
+         loop seamless with no pause and nothing to load mid-scroll. -->
+    <div class="marquee" id="marquee">
+        <div class="marquee__track">
+
+            <img class="ph" src="images/IMGC3509.jpg"
+                 alt="Shelby and Hamza walking hand in hand through a garden">
+            <img class="ph" src="images/IMGC3891.jpg"
+                 alt="Shelby and Hamza walking beside the pond">
+            <img class="ph" src="images/IMGC4249.jpg"
+                 alt="Shelby's engagement ring">
+            <img class="ph" src="images/IMGC3742.jpg"
+                 alt="Shelby and Hamza sitting together by the water">
+
+            <!-- Second copy. aria-hidden so screen readers don't
+                 announce every photo twice. -->
+            <img class="ph" src="images/IMGC3509.jpg" alt="" aria-hidden="true">
+            <img class="ph" src="images/IMGC3891.jpg" alt="" aria-hidden="true">
+            <img class="ph" src="images/IMGC4249.jpg" alt="" aria-hidden="true">
+            <img class="ph" src="images/IMGC3742.jpg" alt="" aria-hidden="true">
+
+        </div>
+    </div>
+
+    <p class="gif-wrap">
         <img class="heart-gif"
              src="images/ca97bde328433c2497b154afdee5f8d7.gif"
              alt="">
@@ -298,17 +405,6 @@ a { color: #b3243a; }
     <hr>
 
     <div class="links">
-        <!-- Your title said "Goes to Zelle" but the link went to
-             Google. Swap the href for your real registry link. -->
-        <a href="https://www.google.com/" target="_blank" rel="noopener">
-            Honeymoon fund 🖤
-        </a>
-
-        <a href="lyrics.html" target="_blank" rel="noopener">
-            Our song &lt;3
-        </a>
-
-        <!-- FIXED: this <a> tag was never closed in your version. -->
         <a href="mailto:hmehic13@gmail.com">
             Questions? Email me
         </a>
