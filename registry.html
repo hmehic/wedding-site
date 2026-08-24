@@ -10,10 +10,6 @@
 
 <style>
 
-/* Same font setup as the home page. If you later move all this CSS
-   into a shared styles.css file, you'd delete these blocks from
-   every page and link that one file instead — that's the whole
-   reason external stylesheets exist. */
 @font-face {
     font-family: 'Aston Script';
     src: url('fonts/AstonScript.woff') format('woff'),
@@ -28,14 +24,13 @@ body {
     line-height: 1.6;
     max-width: 45rem;
     margin: 0 auto;
-    padding: 5rem 1.25rem 2rem;   /* extra room at the top */
+    padding: 5rem 1.25rem 2rem;
 }
 
 img { max-width: 100%; height: auto; }
 
 .topbar {
-    /* position:absolute takes it out of the centered column and pins
-       it to the top-left corner of the page instead. */
+
     position: absolute;
     top: 1.5rem;
     left: 1.5rem;
@@ -49,8 +44,6 @@ img { max-width: 100%; height: auto; }
     margin: 0;
 }
 
-/* On a narrow screen the centered content reaches the edges, so the
-   corner position would overlap it. Put it back in the normal flow. */
 @media (max-width: 52rem) {
     .topbar {
         position: static;
@@ -73,7 +66,7 @@ a { color: #b3243a; }
 .nav {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;   /* centers the tabs */
+    justify-content: center;
     gap: 1.5rem;
     margin: 1.5rem 0 2.5rem;
     padding-bottom: 1.25rem;
@@ -105,7 +98,6 @@ h2 { font-size: 1.4rem; margin-bottom: 1rem; text-align: center; }
     font-size: 0.95rem;
 }
 
-/* ---- registry ---- */
 .gifts {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -143,8 +135,6 @@ h2 { font-size: 1.4rem; margin-bottom: 1rem; text-align: center; }
     color: #999;
 }
 
-/* Same styling for the two links and the one button, so all three
-   look identical even though they're different HTML elements. */
 .send {
     margin-top: auto;
     align-self: center;
@@ -163,8 +153,6 @@ h2 { font-size: 1.4rem; margin-bottom: 1rem; text-align: center; }
 
 .send:hover { background: #f2f2f2; }
 
-/* The second button in a card shouldn't get pushed to the bottom
-   by margin-top:auto — only the first one should. */
 .send-alt {
     margin-top: 0.6rem;
 }
@@ -211,14 +199,9 @@ h2 { font-size: 1.4rem; margin-bottom: 1rem; text-align: center; }
         <div class="gift">
             <h3>Zelle</h3>
             <p class="handle" id="zelleNum">612-709-7186</p>
-            <!-- Zelle lives inside each bank's own app, so there's no
-                 link that can open it with details filled in. This
-                 copies the number instead. -->
+
             <button class="send" id="zelleCopy">Copy number</button>
 
-            <!-- Zelle has no standalone app any more (it shut down in
-                 2025), so there's no link that opens it. This points
-                 to Zelle's bank finder instead. -->
             <a class="send send-alt"
                href="https://www.zellepay.com/get-started"
                target="_blank" rel="noopener">Find your bank</a>
@@ -238,8 +221,6 @@ h2 { font-size: 1.4rem; margin-bottom: 1rem; text-align: center; }
 
 <script>
 
-// Copy the Zelle number to the clipboard, then confirm it worked
-// by briefly changing the button text.
 document.getElementById('zelleCopy').addEventListener('click', function () {
     const btn = this;
     const number = document.getElementById('zelleNum').textContent.trim();
@@ -248,7 +229,7 @@ document.getElementById('zelleCopy').addEventListener('click', function () {
         btn.textContent = 'Copied';
         setTimeout(function () { btn.textContent = 'Copy number'; }, 2000);
     }).catch(function () {
-        // Clipboard access can be blocked; the number is on screen anyway.
+
         btn.textContent = 'Copy failed';
         setTimeout(function () { btn.textContent = 'Copy number'; }, 2000);
     });

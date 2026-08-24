@@ -1,28 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- charset tells the browser how to read special characters
-         like the emoji and the & symbol -->
+
     <meta charset="UTF-8">
 
-    <!-- MOVED UP FROM BELOW. This has to be in the head, not floating
-         between </head> and <body> like it was. -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Shelby &amp; Hamza</title>
 
-    <!-- MOVED UP. Your favicon link was outside the head. Browsers
-         usually still find it, but it's invalid HTML. -->
     <link rel="icon" type="image/png"
           href="images/174-1746878_ios-emoji-emoji-iphone-ios-heart-hearts-spin.png">
 
 <style>
 
-/* ============================================================
-   THE HEART INTRO
-   ============================================================ */
-
-/* The full-screen overlay the hearts fall inside. */
 .intro {
     position: fixed;
     inset: 0;
@@ -32,13 +22,11 @@
     transition: opacity 0.9s ease;
 }
 
-/* JavaScript adds this class when the shower is over. */
 .intro.is-done {
     opacity: 0;
     pointer-events: none;
 }
 
-/* One falling heart. JS sets the size, position and timing. */
 .heart {
     position: absolute;
     top: -14vh;
@@ -59,7 +47,6 @@
            opacity: 0; }
 }
 
-/* Your whole page lives inside .page and fades in. */
 .page {
     opacity: 0;
     transition: opacity 1.1s ease;
@@ -67,31 +54,20 @@
 
 .page.is-visible { opacity: 1; }
 
-/* Falling objects can trigger nausea or migraines. If someone's
-   computer says "reduce motion", skip the animation entirely. */
 @media (prefers-reduced-motion: reduce) {
     .intro { display: none; }
     .page  { opacity: 1; transition: none; }
 }
 
-
-/* ============================================================
-   BASIC PAGE STYLING
-   Light touch — this keeps your layout, just makes it readable
-   and stops it overflowing on phones.
-   ============================================================ */
-
 body {
-    overflow-x: hidden;   /* stops 100vw causing a sideways scrollbar */
+    overflow-x: hidden;
     font-family: Georgia, 'Times New Roman', serif;
     line-height: 1.6;
-    max-width: 45rem;          /* stops text stretching too wide */
-    margin: 0 auto;            /* centers the page */
-    padding: 5rem 1.25rem 2rem;   /* extra room at the top */
+    max-width: 45rem;
+    margin: 0 auto;
+    padding: 5rem 1.25rem 2rem;
 }
 
-/* REPLACES height="300" on your img tag. Setting size in CSS
-   instead of HTML means it can shrink on small screens. */
 img {
     max-width: 100%;
     height: auto;
@@ -99,20 +75,13 @@ img {
 
 .heart-gif { width: 3rem; }
 
-/* ---- scrolling photo row ---- */
-
-/* FULL WIDTH. The page content sits in a centered 45rem column, so
-   to span the whole window this has to break out of it. 100vw is the
-   full window width; the negative margin pulls it to the left edge. */
 .marquee {
     width: 100vw;
     margin-left: calc(50% - 50vw);
     overflow: hidden;
-    font-size: 0;   /* kills whitespace between inline images */
+    font-size: 0;
 }
 
-/* One long row. It holds two identical copies of the photo set, so
-   animating it to -50% lands exactly where it started. */
 .marquee__track {
     display: flex;
     width: max-content;
@@ -124,13 +93,11 @@ img {
     to   { transform: translateX(-50%); }
 }
 
-/* Fixed height, automatic width — so each photo keeps its own shape.
-   The portrait ring shot stays narrow, the wide ones stay wide. */
 .ph {
     height: 30rem;
     width: auto;
     flex-shrink: 0;
-    display: block;   /* removes the small gap browsers add under images */
+    display: block;
     object-fit: cover;
 }
 
@@ -139,93 +106,60 @@ img {
     .marquee__track { animation-duration: 34s; }
 }
 
-/* If someone's system asks for less motion, stop the scroll and let
-   them swipe through by hand instead. */
 @media (prefers-reduced-motion: reduce) {
     .marquee { overflow-x: auto; }
     .marquee__track { animation: none; }
 }
 
-/* REPLACES <pre>. Your story was inside a <pre> tag, which keeps
-   your exact line breaks, and on a phone that forces sideways
-   scrolling. Normal paragraphs wrap to fit any screen. */
+
 .story {
     text-align: center;
-    max-width: 36rem;    /* narrower column reads better when centered */
+    max-width: 36rem;
     margin: 0 auto;
 }
 
 .story p {
     margin-bottom: 1.5rem;
 
-    /* Evens out the line lengths so each paragraph forms a tidy
-       shape instead of ending on one short orphan line. Browsers
-       that don't support it just wrap normally. */
     text-wrap: balance;
 }
 
-/* Centers the "Our story" heading. */
 .page h2 { text-align: center; }
 
-/* Images are block-level, so text-align won't move them.
-   margin: auto on the left and right is what centers a block. */
 .heart-gif {
     margin-left: auto;
     margin-right: auto;
 }
 
-/* The gif sits inside a <p>, so center that too. */
 .gif-wrap { text-align: center; }
 
-/* ============================================================
-   ASTON SCRIPT — a self-hosted font.
-
-   Google Fonts doesn't have this one, so the file lives in your
-   own fonts/ folder.
-
-   Two formats listed: the browser takes the first one it can
-   read. WOFF is about half the size, so it loads faster; the
-   OTF is there as a backup for anything very old.
-   ============================================================ */
 @font-face {
     font-family: 'Aston Script';
     src: url('fonts/AstonScript.woff') format('woff'),
          url('fonts/AstonScript.ttf') format('truetype');
     font-weight: 400;
     font-style: normal;
-    font-display: swap;   /* show fallback text while it loads */
+    font-display: swap;
 }
 
-/* The names. If Aston Script hasn't loaded, the fallbacks kick
-   in — Brush Script before cursive, so you never land on Comic
-   Sans by accident. */
 h1 {
     font-family: 'Aston Script', 'Brush Script MT', Georgia, serif;
     font-weight: 400;
 
-    /* Smaller than before. This font only comes in a bold weight,
-       and thick strokes get heavier the larger you set them —
-       which is why it looks thinner in the dafont preview. */
     font-size: clamp(2.2rem, 8vw, 3.5rem);
     line-height: 1.2;
     margin: 0 0 1rem;
     text-align: center;
 
-    /* Paints a hairline of the background color along each letter's
-       edge, eating into the strokes so they read lighter. Raise the
-       px value to thin it further, lower it to keep more weight.
-       If you ever change the page background, change this to match. */
     -webkit-text-stroke: 0.6px #fff;
 }
 
 a { color: #b3243a; }
 
-/* The navigation menu. flex puts the links in a row; wrap lets
-   them drop to a second line on narrow phones. */
 .nav {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;   /* centers the tabs */
+    justify-content: center;
     gap: 1.5rem;
     margin: 1.5rem 0 2.5rem;
     padding-bottom: 1.25rem;
@@ -242,16 +176,12 @@ a { color: #b3243a; }
 
 .nav a:hover { color: #b3243a; }
 
-/* The page you're currently on gets marked. This targets the
-   aria-current attribute, so the styling and the accessibility
-   information stay in sync automatically. */
 .nav a[aria-current="page"] {
     color: #b3243a;
     border-bottom: 1px solid #b3243a;
     padding-bottom: 2px;
 }
 
-/* Single link, centered at the bottom of the page. */
 .links {
     text-align: center;
     margin-top: 3rem;
@@ -259,12 +189,8 @@ a { color: #b3243a; }
 
 .links a { display: inline-block; }
 
-/* Date and location, sitting together at the top left.
-   flex puts them on one row; gap is the space between them. */
-
 .topbar {
-    /* position:absolute takes it out of the centered column and pins
-       it to the top-left corner of the page instead. */
+
     position: absolute;
     top: 1.5rem;
     left: 1.5rem;
@@ -278,8 +204,6 @@ a { color: #b3243a; }
     margin: 0;
 }
 
-/* On a narrow screen the centered content reaches the edges, so the
-   corner position would overlap it. Put it back in the normal flow. */
 @media (max-width: 52rem) {
     .topbar {
         position: static;
@@ -292,30 +216,17 @@ a { color: #b3243a; }
 
 <body>
 
-<!-- The overlay. JavaScript fills it with hearts. -->
 <div class="intro" id="intro"></div>
 
-
-
-
-<!-- ============================================================
-     EVERYTHING BELOW IS YOUR PAGE, wrapped in .page so it can
-     fade in. Don't forget the matching </div> at the bottom.
-     ============================================================ -->
 <div class="page" id="page">
 
-    <!-- Date and location, top left. -->
     <div class="topbar">
         <span>September 5th, 2027</span>
         <span>Pepin, WI</span>
     </div>
 
-    <!-- &amp; is the correct way to write & in HTML. -->
     <h1>Shelby &amp; Hamza</h1>
 
-    <!-- Site navigation. <nav> is a real HTML tag that tells screen
-         readers and search engines "this is the menu."
-         aria-current="page" marks which page you're on. -->
     <nav class="nav">
         <a href="index.html" aria-current="page">Home</a>
         <a href="schedule.html">Schedule</a>
@@ -324,16 +235,6 @@ a { color: #b3243a; }
         <a href="faqs.html">FAQs</a>
     </nav>
 
-    <!-- Slideshow. All four photos are stacked on top of each other;
-         only the one with .is-active is visible, and the JavaScript
-         at the bottom moves that class along. -->
-    <!-- A continuously scrolling row of photos.
-
-         The four photos are listed TWICE. The row scrolls left until
-         it has moved exactly half its width, at which point the
-         second copy is sitting precisely where the first one started
-         so the jump back to zero is invisible. That's what makes the
-         loop seamless with no pause and nothing to load mid-scroll. -->
     <div class="marquee" id="marquee">
         <div class="marquee__track">
 
@@ -346,8 +247,6 @@ a { color: #b3243a; }
             <img class="ph" src="images/IMGC3742.jpg"
                  alt="Shelby and Hamza sitting together by the water">
 
-            <!-- Second copy. aria-hidden so screen readers don't
-                 announce every photo twice. -->
             <img class="ph" src="images/IMGC3509.jpg" alt="" aria-hidden="true">
             <img class="ph" src="images/IMGC3891.jpg" alt="" aria-hidden="true">
             <img class="ph" src="images/IMGC4249.jpg" alt="" aria-hidden="true">
@@ -411,38 +310,17 @@ a { color: #b3243a; }
     </div>
 
 </div>
-<!-- ^ closes .page -->
-
 
 <script>
 
-// ============================================================
-// SETTINGS
-// ============================================================
 const HEART_COUNT = window.innerWidth < 700 ? 200 : 400;
-const SHOWER_MS   = 2600;   // milliseconds before the page appears
+const SHOWER_MS   = 2600;
 
-// Your favicon image, reused as the falling heart.
 const HEART_SRC = 'images/174-1746878_ios-emoji-emoji-iphone-ios-heart-hearts-spin.png';
 
 const intro = document.getElementById('intro');
 const page  = document.getElementById('page');
 
-
-// ============================================================
-// ONLY PLAY ONCE PER VISIT
-//
-// sessionStorage is a small note the browser keeps for this tab.
-// It survives page navigation, so clicking Home from Schedule
-// won't replay the animation — but it's wiped when the tab is
-// closed, so a real new visit gets the full intro.
-//
-// (localStorage would remember forever, which is too sticky.)
-//
-// The try/catch is there because some privacy settings block
-// storage entirely. If it throws, we just play the animation
-// rather than breaking the page.
-// ============================================================
 let alreadySeen = false;
 try {
     alreadySeen = sessionStorage.getItem('introSeen') === 'yes';
@@ -452,17 +330,11 @@ try {
 }
 
 if (alreadySeen) {
-    // Skip straight to the page: no hearts, no fade, no delay.
+
     intro.remove();
     page.classList.add('is-visible');
 }
 
-
-// ============================================================
-// BUILD THE HEARTS
-// One loop, one <img> per heart, all values randomized so no
-// two fall the same way.
-// ============================================================
 if (!alreadySeen) for (let i = 0; i < HEART_COUNT; i++) {
     const h = document.createElement('img');
     h.className = 'heart';
@@ -475,19 +347,14 @@ if (!alreadySeen) for (let i = 0; i < HEART_COUNT; i++) {
     h.style.animationDuration = (1.8 + Math.random() * 2.3) + 's';
     h.style.animationDelay    = (Math.random() * 1.5) + 's';
 
-    // These get read by the @keyframes above via var()
     h.style.setProperty('--drift', ((Math.random() - 0.5) * 200) + 'px');
     h.style.setProperty('--spin',  ((Math.random() - 0.5) * 600) + 'deg');
 
     intro.appendChild(h);
 }
 
-
-// ============================================================
-// REVEAL THE PAGE
-// ============================================================
 function reveal() {
-    if (intro.classList.contains('is-done')) return;   // don't run twice
+    if (intro.classList.contains('is-done')) return;
     intro.classList.add('is-done');
     page.classList.add('is-visible');
     setTimeout(function () { intro.remove(); }, 1000);
