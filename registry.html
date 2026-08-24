@@ -28,12 +28,17 @@ body {
     line-height: 1.6;
     max-width: 45rem;
     margin: 0 auto;
-    padding: 2rem 1.25rem;
+    padding: 5rem 1.25rem 2rem;   /* extra room at the top */
 }
 
 img { max-width: 100%; height: auto; }
 
 .topbar {
+    /* position:absolute takes it out of the centered column and pins
+       it to the top-left corner of the page instead. */
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
     display: flex;
     flex-wrap: wrap;
     gap: 1.5rem;
@@ -41,7 +46,16 @@ img { max-width: 100%; height: auto; }
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: #6b6b6b;
-    margin-bottom: 2.5rem;
+    margin: 0;
+}
+
+/* On a narrow screen the centered content reaches the edges, so the
+   corner position would overlap it. Put it back in the normal flow. */
+@media (max-width: 52rem) {
+    .topbar {
+        position: static;
+        margin-bottom: 2.5rem;
+    }
 }
 
 h1 {
@@ -50,6 +64,7 @@ h1 {
     font-size: clamp(2.2rem, 8vw, 3.5rem);
     line-height: 1.2;
     margin: 0 0 1rem;
+    text-align: center;
     -webkit-text-stroke: 0.6px #fff;
 }
 
@@ -58,6 +73,7 @@ a { color: #b3243a; }
 .nav {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;   /* centers the tabs */
     gap: 1.5rem;
     margin: 1.5rem 0 2.5rem;
     padding-bottom: 1.25rem;
@@ -80,7 +96,78 @@ a { color: #b3243a; }
     padding-bottom: 2px;
 }
 
-h2 { font-size: 1.4rem; margin-bottom: 0.5rem; }
+h2 { font-size: 1.4rem; margin-bottom: 1rem; text-align: center; }
+
+.intro {
+    text-align: center;
+    max-width: 32rem;
+    margin: 0 auto 3rem;
+    font-size: 0.95rem;
+}
+
+/* ---- registry ---- */
+.gifts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+@media (max-width: 40rem) {
+    .gifts { grid-template-columns: 1fr; }
+}
+
+.gift {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 1.75rem 1.25rem;
+}
+
+.gift h3 {
+    font-size: 1.05rem;
+    margin: 0 0 0.5rem;
+}
+
+.gift .handle {
+    margin: 0 0 1.25rem;
+    font-size: 0.9rem;
+    color: #6b6b6b;
+    word-break: break-word;
+}
+
+.gift .hint {
+    margin: 0.75rem 0 0;
+    font-size: 0.78rem;
+    color: #999;
+}
+
+/* Same styling for the two links and the one button, so all three
+   look identical even though they're different HTML elements. */
+.send {
+    margin-top: auto;
+    align-self: center;
+    font-family: inherit;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.55rem 1.3rem;
+    border: 1px solid #333;
+    border-radius: 3px;
+    background: #fff;
+    color: #333;
+    cursor: pointer;
+}
+
+.send:hover { background: #f2f2f2; }
+
+/* The second button in a card shouldn't get pushed to the bottom
+   by margin-top:auto — only the first one should. */
+.send-alt {
+    margin-top: 0.6rem;
+}
 
 .placeholder { color: #6b6b6b; }
 
@@ -104,9 +191,70 @@ h2 { font-size: 1.4rem; margin-bottom: 0.5rem; }
         <a href="faqs.html">FAQs</a>
     </nav>
 
-    <!-- Replace everything below with your real content. -->
     <h2>Registry</h2>
-    <p class="placeholder">Coming soon.</p>
+
+    <p class="intro">
+        Your presence is the gift, but if you'd like to
+        contribute to our honeymoon fund, here are a few ways.
+    </p>
+
+    <div class="gifts">
+
+        <div class="gift">
+            <h3>Venmo</h3>
+            <p class="handle">&#64;ShelbyFloe14</p>
+            <a class="send"
+               href="https://venmo.com/u/ShelbyFloe14"
+               target="_blank" rel="noopener">Send with Venmo</a>
+        </div>
+
+        <div class="gift">
+            <h3>Zelle</h3>
+            <p class="handle" id="zelleNum">612-709-7186</p>
+            <!-- Zelle lives inside each bank's own app, so there's no
+                 link that can open it with details filled in. This
+                 copies the number instead. -->
+            <button class="send" id="zelleCopy">Copy number</button>
+
+            <!-- Zelle has no standalone app any more (it shut down in
+                 2025), so there's no link that opens it. This points
+                 to Zelle's bank finder instead. -->
+            <a class="send send-alt"
+               href="https://www.zellepay.com/get-started"
+               target="_blank" rel="noopener">Find your bank</a>
+
+            <p class="hint">Send through your bank's app or website.</p>
+        </div>
+
+        <div class="gift">
+            <h3>PayPal</h3>
+            <p class="handle">paypal.me/1okaymar</p>
+            <a class="send"
+               href="https://paypal.me/1okaymar"
+               target="_blank" rel="noopener">Send with PayPal</a>
+        </div>
+
+    </div>
+
+<script>
+
+// Copy the Zelle number to the clipboard, then confirm it worked
+// by briefly changing the button text.
+document.getElementById('zelleCopy').addEventListener('click', function () {
+    const btn = this;
+    const number = document.getElementById('zelleNum').textContent.trim();
+
+    navigator.clipboard.writeText(number).then(function () {
+        btn.textContent = 'Copied';
+        setTimeout(function () { btn.textContent = 'Copy number'; }, 2000);
+    }).catch(function () {
+        // Clipboard access can be blocked; the number is on screen anyway.
+        btn.textContent = 'Copy failed';
+        setTimeout(function () { btn.textContent = 'Copy number'; }, 2000);
+    });
+});
+
+</script>
 
 </body>
 </html>

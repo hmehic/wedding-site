@@ -86,7 +86,7 @@ body {
     line-height: 1.6;
     max-width: 45rem;          /* stops text stretching too wide */
     margin: 0 auto;            /* centers the page */
-    padding: 2rem 1.25rem;
+    padding: 5rem 1.25rem 2rem;   /* extra room at the top */
 }
 
 /* REPLACES height="300" on your img tag. Setting size in CSS
@@ -136,6 +136,7 @@ h1 {
     font-size: clamp(2.2rem, 8vw, 3.5rem);
     line-height: 1.2;
     margin: 0 0 1rem;
+    text-align: center;
 
     /* Paints a hairline of the background color along each letter's
        edge, eating into the strokes so they read lighter. Raise the
@@ -151,6 +152,7 @@ a { color: #b3243a; }
 .nav {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;   /* centers the tabs */
     gap: 1.5rem;
     margin: 1.5rem 0 2.5rem;
     padding-bottom: 1.25rem;
@@ -180,15 +182,30 @@ a { color: #b3243a; }
 
 /* Date and location, sitting together at the top left.
    flex puts them on one row; gap is the space between them. */
+
 .topbar {
+    /* position:absolute takes it out of the centered column and pins
+       it to the top-left corner of the page instead. */
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
     display: flex;
-    flex-wrap: wrap;          /* stack them if the screen is very narrow */
+    flex-wrap: wrap;
     gap: 1.5rem;
     font-size: 0.85rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: #6b6b6b;
-    margin-bottom: 2.5rem;
+    margin: 0;
+}
+
+/* On a narrow screen the centered content reaches the edges, so the
+   corner position would overlap it. Put it back in the normal flow. */
+@media (max-width: 52rem) {
+    .topbar {
+        position: static;
+        margin-bottom: 2.5rem;
+    }
 }
 
 </style>
@@ -198,6 +215,8 @@ a { color: #b3243a; }
 
 <!-- The overlay. JavaScript fills it with hearts. -->
 <div class="intro" id="intro"></div>
+
+
 
 
 <!-- ============================================================
