@@ -80,7 +80,79 @@ a { color: #b3243a; }
     padding-bottom: 2px;
 }
 
-h2 { font-size: 1.4rem; margin-bottom: 0.5rem; }
+h2 { font-size: 1.4rem; margin-bottom: 1.5rem; text-align: center; }
+
+/* ---- schedule ---- */
+.schedule { text-align: center; }
+
+.day {
+    font-size: 0.85rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #6b6b6b;
+    margin-bottom: 2.5rem;
+}
+
+/* Each event block. Copy the .event div in the HTML to add more —
+   this styling applies to all of them automatically. */
+.event { margin-bottom: 3rem; }
+
+.event h3 {
+    font-size: 1.15rem;
+    margin-bottom: 0.4rem;
+}
+
+.event .time {
+    margin: 0 0 0.75rem;
+}
+
+.event .venue {
+    margin: 0 0 0.25rem;
+    font-weight: bold;
+}
+
+.event .address {
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.event .note {
+    margin: 0 auto;
+    max-width: 28rem;
+    font-size: 0.95rem;
+    color: #6b6b6b;
+}
+
+.arrive {
+    margin: 1.5rem auto 0;
+    max-width: 28rem;
+    font-size: 0.95rem;
+    color: #6b6b6b;
+}
+
+.cal {
+    display: flex;
+    margin-top: 2.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.cal button {
+    font: inherit;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.65rem 1.4rem;
+    border: 1px solid #333;
+    border-radius: 3px;
+    background: #fff;
+    color: #333;
+    cursor: pointer;
+}
+
+.cal button:hover { background: #f2f2f2; }
 
 .placeholder { color: #6b6b6b; }
 
@@ -104,9 +176,113 @@ h2 { font-size: 1.4rem; margin-bottom: 0.5rem; }
         <a href="faqs.html">FAQs</a>
     </nav>
 
-    <!-- Replace everything below with your real content. -->
     <h2>Schedule</h2>
-    <p class="placeholder">Coming soon.</p>
+
+    <div class="schedule">
+
+        <p class="day">Sunday, September 5, 2027</p>
+
+        <!-- One event block. Copy the whole .event div to add another. -->
+        <div class="event">
+            <h3>Ceremony</h3>
+            <p class="time">4:00 PM &ndash; 4:30 PM</p>
+            <p class="venue">The Hidden Meadow and Barn LLC</p>
+            <p class="address">
+                <!-- target="_blank" opens the map in a new tab.
+                     rel="noopener" is a security best practice that
+                     goes with it. -->
+                <a href="https://www.google.com/maps/search/?api=1&amp;query=44.48456950,-92.13590240&amp;query_place_id=ChIJlw3GJ89J-IcRPDukwjYqDy8"
+                   target="_blank"
+                   rel="noopener">
+                    W9602 Balsam Lane, Pepin, WI 54759
+                </a>
+            </p>
+
+            <p class="arrive">
+                Please arrive by 3:40 PM. This allows enough time for
+                everyone to get seated.
+            </p>
+        </div>
+
+        <div class="event">
+            <h3>Social Hour</h3>
+            <p class="time">4:30 PM &ndash; 5:30 PM</p>
+            <p class="note">Happy hour!</p>
+        </div>
+
+        <div class="event">
+            <h3>Dinner &amp; Dessert</h3>
+            <p class="time">5:30 PM &ndash; 7:00 PM</p>
+            <p class="note">
+                We will be having a taco bar. Meat and veggie options
+                will be available.
+            </p>
+        </div>
+
+        <div class="event">
+            <h3>Party</h3>
+            <p class="time">7:05 PM &ndash; 11:30 PM</p>
+            <p class="note">Time to dance the night away.</p>
+        </div>
+
+        <!-- Moved out of the ceremony block so it sits below every
+             event rather than inside the first one. -->
+        <div class="cal">
+            <button id="ics">Add to calendar</button>
+        </div>
+
+    </div>
+
+<script>
+
+// ============================================================
+// ADD TO CALENDAR
+//
+// An .ics file is the standard calendar format — Apple Calendar,
+// Outlook, and most phone calendar apps read it. Rather than
+// hosting a file, we build the text here and hand it to the
+// browser as a download.
+//
+// Times are in UTC (the Z on the end means UTC). September in
+// Wisconsin is CDT, which is 5 hours behind, so the 4:00 PM
+// ceremony is 21:00 UTC.
+// ============================================================
+
+const EVENT = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//shelbyandhamza//wedding//EN',
+    'BEGIN:VEVENT',
+    'UID:ceremony-20270905@shelbyandhamza.com',
+    'DTSTAMP:20260824T000000Z',
+    'DTSTART:20270905T210000Z',
+    'DTEND:20270905T213000Z',
+    'SUMMARY:Shelby & Hamza\'s Wedding',
+    'DESCRIPTION:Ceremony begins at 4:00 PM. Please arrive by 3:40 PM.',
+    'LOCATION:W9602 Balsam Lane\\, Pepin\\, WI 54759',
+    'END:VEVENT',
+    'END:VCALENDAR'
+].join('\r\n');   // the calendar format requires these line endings
+
+
+document.getElementById('ics').addEventListener('click', function () {
+
+    // A Blob is a chunk of data the browser treats like a file.
+    const blob = new Blob([EVENT], { type: 'text/calendar;charset=utf-8' });
+
+    // Make a temporary link pointing at that data, click it, remove it.
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'shelby-and-hamza-wedding.ics';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // Free the memory the blob URL was holding.
+    URL.revokeObjectURL(link.href);
+});
+
+</script>
 
 </body>
 </html>
