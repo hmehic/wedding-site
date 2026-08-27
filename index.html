@@ -73,19 +73,72 @@ img {
     height: auto;
 }
 
-.heart-gif { width: 3rem; }
 
 .marquee {
+    position: relative;
     width: 100vw;
     margin-left: calc(50% - 50vw);
     overflow: hidden;
     font-size: 0;
 }
 
+.marquee__label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    pointer-events: none;
+    white-space: nowrap;
+
+    font-family: 'Hello Bride', 'Brush Script MT', Georgia, serif;
+    font-size: clamp(2rem, 7vw, 3.5rem);
+    line-height: 1.2;
+    color: #ffffff;
+}
+
+.countdown {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    margin: 3rem 0 2.5rem;
+    text-align: center;
+}
+
+.countdown__unit {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.countdown__num {
+    font-size: clamp(1.8rem, 6vw, 2.75rem);
+    line-height: 1;
+    color: #b3243a;
+    font-variant-numeric: tabular-nums;
+}
+
+.countdown__label {
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #6b6b6b;
+}
+
+.countdown__done {
+    font-size: clamp(1.6rem, 5vw, 2.2rem);
+    color: #b3243a;
+    margin: 0;
+}
+
+@media (max-width: 34rem) {
+    .countdown { gap: 1.4rem; }
+}
+
 .marquee__track {
     display: flex;
     width: max-content;
-    animation: scroll-left 48s linear infinite;
+    animation: scroll-left 96s linear infinite;
 }
 
 @keyframes scroll-left {
@@ -103,7 +156,7 @@ img {
 
 @media (max-width: 34rem) {
     .ph { height: 18rem; }
-    .marquee__track { animation-duration: 34s; }
+    .marquee__track { animation-duration: 68s; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -124,34 +177,31 @@ img {
     text-wrap: balance;
 }
 
-.page h2 { text-align: center; }
-
-.heart-gif {
-    margin-left: auto;
-    margin-right: auto;
+.page h2 {
+    font-family: 'Hello Bride', 'Brush Script MT', Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(1.8rem, 5vw, 2.4rem);
+    text-align: center;
 }
 
-.gif-wrap { text-align: center; }
 
 @font-face {
-    font-family: 'Aston Script';
-    src: url('fonts/AstonScript.woff') format('woff'),
-         url('fonts/AstonScript.ttf') format('truetype');
+    font-family: 'Hello Bride';
+    src: url('fonts/HelloBrideScript.woff') format('woff'),
+         url('fonts/Hello Bride Script.ttf') format('truetype');
     font-weight: 400;
     font-style: normal;
     font-display: swap;
 }
 
 h1 {
-    font-family: 'Aston Script', 'Brush Script MT', Georgia, serif;
+    font-family: 'Hello Bride', 'Brush Script MT', Georgia, serif;
     font-weight: 400;
 
-    font-size: clamp(2.2rem, 8vw, 3.5rem);
-    line-height: 1.2;
+    font-size: clamp(3rem, 11vw, 5rem);
+    line-height: 1.25;
     margin: 0 0 1rem;
     text-align: center;
-
-    -webkit-text-stroke: 0.6px #fff;
 }
 
 a { color: #b3243a; }
@@ -238,28 +288,56 @@ a { color: #b3243a; }
     <div class="marquee" id="marquee">
         <div class="marquee__track">
 
-            <img class="ph" src="images/IMGC3509.jpg"
-                 alt="Shelby and Hamza walking hand in hand through a garden">
+            <img class="ph" src="images/IMG_1250.JPG"
+                 alt="Shelby and Hamza holding hands in a tall grass field">
             <img class="ph" src="images/IMGC3891.jpg"
                  alt="Shelby and Hamza walking beside the pond">
+            <img class="ph" src="images/IMG_1258.JPG"
+                 alt="Shelby and Hamza lying in the clover, smiling at each other">
+            <img class="ph" src="images/IMGC3509.jpg"
+                 alt="Shelby and Hamza walking hand in hand through a garden">
+            <img class="ph" src="images/IMG_1255.JPG"
+                 alt="Shelby and Hamza running through the grass together">
             <img class="ph" src="images/IMGC4249.jpg"
                  alt="Shelby's engagement ring">
+            <img class="ph" src="images/IMG_1251.JPG"
+                 alt="Hamza looking back at Shelby as they hold hands in the field">
             <img class="ph" src="images/IMGC3742.jpg"
                  alt="Shelby and Hamza sitting together by the water">
 
-            <img class="ph" src="images/IMGC3509.jpg" alt="" aria-hidden="true">
+            <img class="ph" src="images/IMG_1250.JPG" alt="" aria-hidden="true">
             <img class="ph" src="images/IMGC3891.jpg" alt="" aria-hidden="true">
+            <img class="ph" src="images/IMG_1258.JPG" alt="" aria-hidden="true">
+            <img class="ph" src="images/IMGC3509.jpg" alt="" aria-hidden="true">
+            <img class="ph" src="images/IMG_1255.JPG" alt="" aria-hidden="true">
             <img class="ph" src="images/IMGC4249.jpg" alt="" aria-hidden="true">
+            <img class="ph" src="images/IMG_1251.JPG" alt="" aria-hidden="true">
             <img class="ph" src="images/IMGC3742.jpg" alt="" aria-hidden="true">
 
         </div>
+
+        <span class="marquee__label">The Mehics</span>
     </div>
 
-    <p class="gif-wrap">
-        <img class="heart-gif"
-             src="images/ca97bde328433c2497b154afdee5f8d7.gif"
-             alt="">
-    </p>
+    <div class="countdown" id="countdown">
+        <div class="countdown__unit">
+            <span class="countdown__num" id="cd-days">&mdash;</span>
+            <span class="countdown__label">Days</span>
+        </div>
+        <div class="countdown__unit">
+            <span class="countdown__num" id="cd-hours">&mdash;</span>
+            <span class="countdown__label">Hours</span>
+        </div>
+        <div class="countdown__unit">
+            <span class="countdown__num" id="cd-minutes">&mdash;</span>
+            <span class="countdown__label">Minutes</span>
+        </div>
+        <div class="countdown__unit">
+            <span class="countdown__num" id="cd-seconds">&mdash;</span>
+            <span class="countdown__label">Seconds</span>
+        </div>
+    </div>
+
 
     <h2>Our story</h2>
 
@@ -332,6 +410,8 @@ try {
 if (alreadySeen) {
 
     intro.remove();
+
+    page.style.transition = 'none';
     page.classList.add('is-visible');
 }
 
@@ -361,6 +441,43 @@ function reveal() {
 }
 
 if (!alreadySeen) setTimeout(reveal, SHOWER_MS);
+
+(function () {
+
+    const TARGET = new Date('2027-09-05T16:00:00-05:00').getTime();
+
+    const box     = document.getElementById('countdown');
+    const days    = document.getElementById('cd-days');
+    const hours   = document.getElementById('cd-hours');
+    const minutes = document.getElementById('cd-minutes');
+    const seconds = document.getElementById('cd-seconds');
+
+    let timer;
+
+    function pad(n) { return String(n).padStart(2, '0'); }
+
+    function tick() {
+
+        const diff = TARGET - Date.now();
+
+        if (diff <= 0) {
+            clearInterval(timer);
+            box.innerHTML = '<p class="countdown__done">Today is the day!</p>';
+            return;
+        }
+
+        const total = Math.floor(diff / 1000);
+
+        days.textContent    = Math.floor(total / 86400);
+        hours.textContent   = pad(Math.floor(total % 86400 / 3600));
+        minutes.textContent = pad(Math.floor(total % 3600 / 60));
+        seconds.textContent = pad(total % 60);
+    }
+
+    tick();
+    timer = setInterval(tick, 1000);
+
+})();
 
 </script>
 
