@@ -232,6 +232,29 @@ a { color: #b3243a; }
     padding-bottom: 2px;
 }
 
+.story-title {
+    background-image: url('images/our-story-wreath.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    width: min(18rem, 82vw);
+    height: min(18rem, 82vw);
+    margin: 2rem auto 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.story-title h2 { margin: 0; }
+
+.floral-sprig {
+    display: block;
+    width: 2.75rem;
+    height: auto;
+    margin: 3rem auto 0;
+    opacity: 0.45;
+}
+
 .links {
     text-align: center;
     margin-top: 3rem;
@@ -339,7 +362,9 @@ a { color: #b3243a; }
     </div>
 
 
-    <h2>Our story</h2>
+    <div class="story-title">
+        <h2>Our story</h2>
+    </div>
 
     <div class="story">
         <p>
@@ -379,7 +404,7 @@ a { color: #b3243a; }
         </p>
     </div>
 
-    <hr>
+    <img class="floral-sprig" src="images/floral-sprig.svg" alt="">
 
     <div class="links">
         <a href="mailto:hmehic13@gmail.com">
