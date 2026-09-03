@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSVP — Shelby &amp; Hamza</title>
+
+    <link rel="icon" type="image/png"
+          href="images/174-1746878_ios-emoji-emoji-iphone-ios-heart-hearts-spin.png">
+
+<style>
+
+@font-face {
+    font-family: 'Hello Bride';
+    src: url('fonts/HelloBrideScript.woff') format('woff'),
+         url('fonts/Hello Bride Script.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+body {
+    font-family: Georgia, 'Times New Roman', serif;
+    line-height: 1.6;
+    max-width: 45rem;
+    margin: 0 auto;
+    padding: 5rem 1.25rem 2rem;
+}
+
+img { max-width: 100%; height: auto; }
+
+.topbar {
+
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #6b6b6b;
+    margin: 0;
+}
+
+@media (max-width: 52rem) {
+    .topbar {
+        position: static;
+        margin-bottom: 2.5rem;
+    }
+}
+
+h1 {
+    font-family: 'Hello Bride', 'Brush Script MT', Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(3rem, 11vw, 5rem);
+    line-height: 1.25;
+    margin: 0 0 1rem;
+    text-align: center;
+}
+
+a { color: #b3243a; }
+
+.nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    margin: 1.5rem 0 2.5rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid #ddd;
+}
+
+.nav a {
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #6b6b6b;
+}
+
+.nav a:hover { color: #b3243a; }
+
+.nav a[aria-current="page"] {
+    color: #b3243a;
+    border-bottom: 1px solid #b3243a;
+    padding-bottom: 2px;
+}
+
+h2 { font-size: 1.4rem; margin-bottom: 1.5rem; text-align: center; }
+
+.intro {
+    text-align: center;
+    max-width: 30rem;
+    margin: 0 auto 2.5rem;
+    font-size: 0.95rem;
+    color: #6b6b6b;
+}
+
+/* ---------- name lookup ---------- */
+
+.lookup {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+}
+
+.lookup input {
+    font: inherit;
+    font-size: 1rem;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid #bbb;
+    border-radius: 3px;
+    min-width: 16rem;
+    flex: 1 1 16rem;
+    max-width: 22rem;
+}
+
+.lookup input:focus {
+    outline: none;
+    border-color: #b3243a;
+}
+
+.btn {
+    font: inherit;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.65rem 1.4rem;
+    border: 1px solid #333;
+    border-radius: 3px;
+    background: #fff;
+    color: #333;
+    cursor: pointer;
+}
+
+.btn:hover { background: #f2f2f2; }
+
+.btn.primary {
+    border-color: #b3243a;
+    color: #b3243a;
+}
+
+.btn.primary:hover { background: #fdf2f4; }
+
+/* ---------- messages ---------- */
+
+.message {
+    text-align: center;
+    margin: 1.5rem auto;
+    max-width: 28rem;
+}
+
+.message.error { color: #b3243a; }
+
+.hidden { display: none; }
+
+/* ---------- party list ---------- */
+
+.party { margin-top: 2.5rem; }
+
+.guest {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.guest:first-child { border-top: 1px solid #eee; }
+
+.guest-name { font-size: 1.1rem; }
+
+.choices { display: flex; gap: 0.6rem; }
+
+.choice {
+    font: inherit;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background: #fff;
+    color: #6b6b6b;
+    cursor: pointer;
+}
+
+.choice:hover { border-color: #999; color: #333; }
+
+.choice[aria-pressed="true"] {
+    border-color: #b3243a;
+    background: #b3243a;
+    color: #fff;
+}
+
+.submit-row {
+    text-align: center;
+    margin-top: 2.5rem;
+}
+
+.footnote {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #6b6b6b;
+    margin-top: 3rem;
+}
+
+</style>
+</head>
+
+<body>
+
+    <div class="topbar">
+        <span>September 5th, 2027</span>
+        <span>Pepin, WI</span>
+    </div>
+
+    <h1>Shelby &amp; Hamza</h1>
+
+    <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="schedule.html">Schedule</a>
+        <a href="lodging.html">Lodging</a>
+        <a href="registry.html">Registry</a>
+        <a href="rsvp.html" aria-current="page">RSVP</a>
+        <a href="faqs.html">FAQs</a>
+    </nav>
+
+    <h2>RSVP</h2>
+
+    <p class="intro">
+        Please enter your first and last name as it appears on your
+        invitation. Everyone in your party will come up together.
+    </p>
+
+    <form class="lookup" id="lookupForm">
+        <input type="text" id="nameInput" placeholder="Your full name"
+               autocomplete="name" required>
+        <button class="btn primary" type="submit">Find my invitation</button>
+    </form>
+
+    <p class="message hidden" id="message"></p>
+
+    <div class="party hidden" id="party"></div>
+
+    <div class="submit-row hidden" id="submitRow">
+        <button class="btn primary" id="submitBtn">Send our response</button>
+    </div>
+
+    <p class="footnote">
+        Trouble finding your name?
+        <a href="mailto:hmehic13@gmail.com">Email us</a> and we'll sort it out.
+    </p>
+
+<script>
+
+// Where the API lives. Change this to your hosted URL when you deploy.
+const API = "http://127.0.0.1:8000";
+
+const form      = document.getElementById("lookupForm");
+const nameInput = document.getElementById("nameInput");
+const message   = document.getElementById("message");
+const partyEl   = document.getElementById("party");
+const submitRow = document.getElementById("submitRow");
+const submitBtn = document.getElementById("submitBtn");
+
+// answers[guestId] = 1 (coming) or 0 (not coming)
+let answers = {};
+
+function showMessage(text, isError) {
+    message.textContent = text;
+    message.classList.remove("hidden");
+    message.classList.toggle("error", Boolean(isError));
+}
+
+function clearMessage() {
+    message.textContent = "";
+    message.classList.add("hidden");
+    message.classList.remove("error");
+}
+
+form.addEventListener("submit", async function (event) {
+
+    event.preventDefault();
+
+    const name = nameInput.value.trim();
+    if (!name) return;
+
+    clearMessage();
+    partyEl.classList.add("hidden");
+    submitRow.classList.add("hidden");
+    partyEl.innerHTML = "";
+    answers = {};
+
+    try {
+        const response = await fetch(API + "/guests/" + encodeURIComponent(name));
+
+        if (response.status === 404) {
+            showMessage("We couldn't find that name. Check the spelling, or try the name on your invitation.", true);
+            return;
+        }
+
+        if (!response.ok) {
+            showMessage("Something went wrong on our end. Please try again in a moment.", true);
+            return;
+        }
+
+        const guests = await response.json();
+        renderParty(guests);
+
+    } catch (err) {
+        showMessage("We couldn't reach the server. Please try again in a moment.", true);
+    }
+});
+
+function renderParty(guests) {
+
+    guests.forEach(function (guest) {
+
+        // rows come back as [id, Name, Party_id, Attending]
+        const id        = guest[0];
+        const guestName = guest[1];
+        const attending = guest[3];
+
+        if (attending !== null) answers[id] = attending;
+
+        const row = document.createElement("div");
+        row.className = "guest";
+
+        const nameEl = document.createElement("span");
+        nameEl.className = "guest-name";
+        nameEl.textContent = guestName;
+
+        const choices = document.createElement("div");
+        choices.className = "choices";
+
+        const yes = makeChoice("Attending", 1, id, attending === 1);
+        const no  = makeChoice("Not attending", 0, id, attending === 0);
+
+        choices.appendChild(yes);
+        choices.appendChild(no);
+
+        row.appendChild(nameEl);
+        row.appendChild(choices);
+        partyEl.appendChild(row);
+    });
+
+    partyEl.classList.remove("hidden");
+    submitRow.classList.remove("hidden");
+}
+
+function makeChoice(label, value, guestId, isSelected) {
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "choice";
+    button.textContent = label;
+    button.setAttribute("aria-pressed", isSelected ? "true" : "false");
+
+    button.addEventListener("click", function () {
+
+        answers[guestId] = value;
+
+        // un-press the sibling, press this one
+        const siblings = button.parentElement.querySelectorAll(".choice");
+        siblings.forEach(function (other) {
+            other.setAttribute("aria-pressed", "false");
+        });
+        button.setAttribute("aria-pressed", "true");
+    });
+
+    return button;
+}
+
+submitBtn.addEventListener("click", async function () {
+
+    const ids = Object.keys(answers);
+    const rows = partyEl.querySelectorAll(".guest");
+
+    if (ids.length < rows.length) {
+        showMessage("Please choose attending or not attending for everyone in your party.", true);
+        return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Sending...";
+    clearMessage();
+
+    try {
+        for (const id of ids) {
+            const response = await fetch(
+                API + "/guests/" + id + "/" + answers[id],
+                { method: "POST" }
+            );
+            if (!response.ok) throw new Error("save failed");
+        }
+
+        partyEl.classList.add("hidden");
+        submitRow.classList.add("hidden");
+        showMessage("Thank you — your response has been recorded. You can look your name up again any time to change it.", false);
+
+    } catch (err) {
+        showMessage("We couldn't save your response. Please try again in a moment.", true);
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Send our response";
+    }
+});
+
+</script>
+
+</body>
+</html>

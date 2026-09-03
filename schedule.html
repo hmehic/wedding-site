@@ -161,12 +161,27 @@ h2 { font-size: 1.4rem; margin-bottom: 1.5rem; text-align: center; }
 
 .placeholder { color: #6b6b6b; }
 
-.page-flourish {
-    display: block;
-    width: min(9rem, 40vw);
-    height: auto;
-    margin: 3.5rem auto 0;
-    opacity: 0.5;
+.flourish-wrap {
+    position: relative;
+    margin-bottom: 13rem;
+}
+
+.flourish-wrap::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%, 42%);
+    width: min(52rem, 94vw);
+    aspect-ratio: 721 / 528;
+    background: url('images/page-flourish.svg') center / 100% 100% no-repeat;
+    z-index: -1;
+    pointer-events: none;
+}
+
+@media (max-width: 40rem) {
+    .flourish-wrap { margin-bottom: 3rem; }
+    .flourish-wrap::after { display: none; }
 }
 
 
@@ -187,9 +202,11 @@ h2 { font-size: 1.4rem; margin-bottom: 1.5rem; text-align: center; }
         <a href="schedule.html" aria-current="page">Schedule</a>
         <a href="lodging.html">Lodging</a>
         <a href="registry.html">Registry</a>
+        <a href="rsvp.html">RSVP</a>
         <a href="faqs.html">FAQs</a>
     </nav>
 
+    <div class="flourish-wrap">
     <h2>Schedule</h2>
 
     <div class="schedule">
@@ -242,6 +259,8 @@ h2 { font-size: 1.4rem; margin-bottom: 1.5rem; text-align: center; }
 
     </div>
 
+    </div>
+
 <script>
 
 const EVENT = [
@@ -276,8 +295,6 @@ document.getElementById('ics').addEventListener('click', function () {
 
 </script>
 
-
-    <img class="page-flourish" src="images/page-flourish.svg" alt="">
 
 </body>
 </html>

@@ -167,7 +167,6 @@ img {
 
 .story {
     text-align: center;
-    max-width: 36rem;
     margin: 0 auto;
 }
 
@@ -232,20 +231,34 @@ a { color: #b3243a; }
     padding-bottom: 2px;
 }
 
-.story-title {
-    background-image: url('images/our-story-wreath.svg');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    width: min(18rem, 82vw);
-    height: min(18rem, 82vw);
-    margin: 2rem auto 0.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.story-section {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
 }
 
-.story-title h2 { margin: 0; }
+.story-frame {
+    position: relative;
+    max-width: 21rem;
+    margin: 13rem auto;
+}
+
+.story-frame::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(330%, 95vw);
+    aspect-ratio: 982 / 1035;
+    background: url('images/our-story-wreath.svg') center / 100% 100% no-repeat;
+    z-index: -1;
+    pointer-events: none;
+}
+
+@media (max-width: 40rem) {
+    .story-frame { margin: 4rem auto; }
+    .story-frame::before { display: none; }
+}
 
 .floral-sprig {
     display: block;
@@ -305,6 +318,7 @@ a { color: #b3243a; }
         <a href="schedule.html">Schedule</a>
         <a href="lodging.html">Lodging</a>
         <a href="registry.html">Registry</a>
+        <a href="rsvp.html">RSVP</a>
         <a href="faqs.html">FAQs</a>
     </nav>
 
@@ -362,9 +376,10 @@ a { color: #b3243a; }
     </div>
 
 
-    <div class="story-title">
-        <h2>Our story</h2>
-    </div>
+    <div class="story-section">
+    <div class="story-frame">
+
+    <h2>Our story</h2>
 
     <div class="story">
         <p>
@@ -402,6 +417,9 @@ a { color: #b3243a; }
             to eat, dance, and make more unforgettable memories with all
             of our favorite people!
         </p>
+    </div>
+
+    </div>
     </div>
 
     <img class="floral-sprig" src="images/floral-sprig.svg" alt="">
