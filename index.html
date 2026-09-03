@@ -165,8 +165,44 @@ img {
 }
 
 
+.story-wrap {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    padding: 3.5rem 0 4.5rem;
+    overflow: hidden;
+}
+
+.corner {
+    position: absolute;
+    width: clamp(9rem, 21vw, 17rem);
+    height: auto;
+    opacity: 0.75;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.corner-tl {
+    top: 0;
+    left: 3vw;
+    transform: rotate(180deg);
+}
+
+.corner-br {
+    bottom: 0;
+    right: 3vw;
+}
+
+@media (max-width: 52rem) {
+    .corner { width: 40vw; opacity: 0.55; }
+    .corner-tl { left: -4vw; }
+    .corner-br { right: -4vw; }
+    .story-wrap { padding: 4rem 0 5.5rem; }
+}
+
 .story {
     text-align: center;
+    max-width: 36rem;
     margin: 0 auto;
 }
 
@@ -229,43 +265,6 @@ a { color: #b3243a; }
     color: #b3243a;
     border-bottom: 1px solid #b3243a;
     padding-bottom: 2px;
-}
-
-.story-section {
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-}
-
-.story-frame {
-    position: relative;
-    max-width: 21rem;
-    margin: 13rem auto;
-}
-
-.story-frame::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: min(330%, 95vw);
-    aspect-ratio: 982 / 1035;
-    background: url('images/our-story-wreath.svg') center / 100% 100% no-repeat;
-    z-index: -1;
-    pointer-events: none;
-}
-
-@media (max-width: 40rem) {
-    .story-frame { margin: 4rem auto; }
-    .story-frame::before { display: none; }
-}
-
-.floral-sprig {
-    display: block;
-    width: 2.75rem;
-    height: auto;
-    margin: 3rem auto 0;
-    opacity: 0.45;
 }
 
 .links {
@@ -376,8 +375,10 @@ a { color: #b3243a; }
     </div>
 
 
-    <div class="story-section">
-    <div class="story-frame">
+    <div class="story-wrap">
+
+    <img class="corner corner-tl" src="images/corner-flowers.svg" alt="">
+    <img class="corner corner-br" src="images/corner-flowers.svg" alt="">
 
     <h2>Our story</h2>
 
@@ -420,9 +421,6 @@ a { color: #b3243a; }
     </div>
 
     </div>
-    </div>
-
-    <img class="floral-sprig" src="images/floral-sprig.svg" alt="">
 
     <div class="links">
         <a href="mailto:hmehic13@gmail.com">
