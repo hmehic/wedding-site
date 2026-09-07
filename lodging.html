@@ -12,6 +12,7 @@
 
 html { background: #fdfbf8; }
 
+
 @font-face {
     font-family: 'Hello Bride';
     src: url('fonts/HelloBrideScript.woff') format('woff'),
@@ -202,78 +203,58 @@ h2 { font-size: 1.4rem; margin: 0 0 1rem; text-align: center; }
 
 
 
-/* ---------- floral side panels ---------- */
 
-.side {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    z-index: -1;
-    width: calc((100vw - 46rem) / 2);
-    background: url('images/side-floral.jpg') center / cover no-repeat;
-    pointer-events: none;
-}
+/* ---------- floral band behind the header ---------- */
 
-/* fade the pattern in from the top so it clears the header */
-.side::after {
-    content: "";
+.topfloral {
     position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        to bottom,
-        #fdfbf8 0%,
-        rgba(253, 251, 248, 0) 26%
-    );
-}
-
-/* fade each panel out as it approaches the text */
-.side-left {
+    top: 0;
     left: 0;
-    -webkit-mask-image: linear-gradient(to right, #000 30%, transparent 100%);
-            mask-image: linear-gradient(to right, #000 30%, transparent 100%);
+    z-index: -1;              /* sits behind the names and nav */
+    width: 100%;
+    height: clamp(13rem, 30vw, 17rem);
+    /* tiled small rather than blown up to cover - more of the pattern
+       shows and it stays sharp (the file is a mirrored pair, so the
+       horizontal repeat has no seam) */
+    background: url('images/top-floral.jpg') top center / auto 26rem repeat-x;
+    opacity: 0.38;
+    pointer-events: none;
+
+    /* dissolve into the page at the bottom */
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 38%, transparent 100%);
+            mask-image: linear-gradient(to bottom, #000 0%, #000 38%, transparent 100%);
 }
 
-.side-right {
-    right: 0;
-    transform: scaleX(-1);
-    -webkit-mask-image: linear-gradient(to right, #000 30%, transparent 100%);
-            mask-image: linear-gradient(to right, #000 30%, transparent 100%);
+/* Animates in only when arriving from a page that has no band
+   (see the referrer check in <head>). */
+.sides-enter .topfloral {
+    animation: band-in 1.4s cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 
-/* no margin to put them in on small screens */
-@media (max-width: 62rem) {
-    .side { display: none; }
-}
-
-
-/* Panels animate in only when arriving from a page that has no panels
-   (see the referrer check in <head>). Page-to-page among these five,
-   they are simply already there. */
-
-.sides-enter .side-left {
-    animation: side-in-left 1.5s cubic-bezier(0.22, 0.61, 0.36, 1) both;
-}
-
-.sides-enter .side-right {
-    animation: side-in-right 1.5s cubic-bezier(0.22, 0.61, 0.36, 1) both;
-}
-
-@keyframes side-in-left {
-    from { opacity: 0; transform: translateX(-3rem); }
-    to   { opacity: 1; transform: translateX(0); }
-}
-
-/* the right panel is mirrored, so its flip has to stay in every keyframe */
-@keyframes side-in-right {
-    from { opacity: 0; transform: scaleX(-1) translateX(-3rem); }
-    to   { opacity: 1; transform: scaleX(-1) translateX(0); }
+@keyframes band-in {
+    from { opacity: 0;    transform: translateY(-1.75rem); }
+    to   { opacity: 0.38; transform: translateY(0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .sides-enter .side-left,
-    .sides-enter .side-right {
-        animation: none;
-    }
+    .sides-enter .topfloral { animation: none; opacity: 0.38; }
+}
+
+
+
+
+/* Leaving for the home page: play the band out before navigating. */
+.sides-leave .topfloral {
+    animation: band-out 0.55s ease-in both;
+}
+
+@keyframes band-out {
+    from { opacity: 0.38; transform: translateY(0); }
+    to   { opacity: 0;    transform: translateY(-1.75rem); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sides-leave .topfloral { animation: none; }
 }
 
 </style>
@@ -311,8 +292,8 @@ h2 { font-size: 1.4rem; margin: 0 0 1rem; text-align: center; }
 
 <body>
 
-    <div class="side side-left" aria-hidden="true"></div>
-    <div class="side side-right" aria-hidden="true"></div>
+    <div class="topfloral" aria-hidden="true"></div>
+
 
     <div class="topbar">
         <span>September 5th, 2027</span>
@@ -412,6 +393,59 @@ h2 { font-size: 1.4rem; margin: 0 0 1rem; text-align: center; }
     }, { threshold: 0, rootMargin: '0px' });
 
     els.forEach(function (el) { io.observe(el); });
+})();
+</script>
+
+
+<script>
+// Clicking through to the home page: run the floral band out first,
+// then navigate, so it eases away instead of vanishing.
+(function () {
+
+    var HOME = 'index.html';
+    var band = document.querySelector('.topfloral');
+    if (!band) return;
+
+    var root = document.documentElement;
+
+    // coming back via the back button shouldn't leave the page mid-exit
+    window.addEventListener('pageshow', function () {
+        root.classList.remove('sides-leave');
+    });
+
+    document.addEventListener('click', function (event) {
+
+        if (event.defaultPrevented) return;
+        if (event.button !== 0) return;
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+        var link = event.target.closest ? event.target.closest('a') : null;
+        if (!link) return;
+        if (link.target && link.target !== '_self') return;
+
+        var href = link.getAttribute('href');
+        if (!href) return;
+        if (href.split('?')[0].split('#')[0] !== HOME) return;
+
+        var reduce = window.matchMedia &&
+                     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduce) return;      // let the normal navigation happen
+
+        event.preventDefault();
+
+        var navigated = false;
+        function go() {
+            if (navigated) return;
+            navigated = true;
+            window.location.href = href;
+        }
+
+        root.classList.remove('sides-enter');
+        root.classList.add('sides-leave');
+
+        band.addEventListener('animationend', go, { once: true });
+        setTimeout(go, 750);     // fallback if the animation never fires
+    });
 })();
 </script>
 
