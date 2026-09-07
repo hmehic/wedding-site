@@ -10,6 +10,8 @@
 
 <style>
 
+html { background: #fdfbf8; }
+
 @font-face {
     font-family: 'Hello Bride';
     src: url('fonts/HelloBrideScript.woff') format('woff'),
@@ -25,7 +27,7 @@ body {
     min-height: 100vh;
     box-sizing: border-box;
     overflow-x: hidden;
-    background: #fdfbf8;
+    background: transparent;
     font-family: Georgia, 'Times New Roman', serif;
     line-height: 1.6;
     max-width: 45rem;
@@ -189,54 +191,118 @@ h2 { font-size: 1.4rem; margin: 0 0 1rem; text-align: center; }
 }
 
 
-/* ---------- page ornament ---------- */
 
-.ornament {
-    display: block;
-    width: 100vw;
-    max-width: none;
-    margin-left: calc(50% - 50vw);
-    height: 26px;
-    background: url('images/divider.png') repeat-x center / auto 26px;
-    opacity: 0.67;
+/* ---------- floral side panels ---------- */
+
+.side {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    z-index: -1;
+    width: calc((100vw - 46rem) / 2);
+    background: url('images/side-floral.jpg') center / cover no-repeat;
     pointer-events: none;
 }
 
-.ornament { flex: none; }
-
-.ornament-top { margin-bottom: 2.5rem; }
-
-.ornament-bottom {
-    --rot: 180deg;
-    transform: rotate(180deg);
-    margin-top: auto;          /* push to the bottom of the page */
-    /* the 180deg flip reverses these visually:
-       padding-bottom becomes the gap ABOVE the art */
-    padding-bottom: 4rem;
-    padding-top: 0.75rem;
-    background-origin: content-box;
-    background-clip: content-box;
+/* fade the pattern in from the top so it clears the header */
+.side::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        #fdfbf8 0%,
+        rgba(253, 251, 248, 0) 26%
+    );
 }
 
-/* the reveal must land on the ornament's own opacity, not 1 */
-.ornament.reveal       { opacity: 0; }
-.ornament.reveal.is-in { opacity: 0.67; }
+/* fade each panel out as it approaches the text */
+.side-left {
+    left: 0;
+    -webkit-mask-image: linear-gradient(to right, #000 30%, transparent 100%);
+            mask-image: linear-gradient(to right, #000 30%, transparent 100%);
+}
 
-@media (max-width: 40rem) {
-    .ornament {
-        height: 19px;
-        background-size: auto 19px;
+.side-right {
+    right: 0;
+    transform: scaleX(-1);
+    -webkit-mask-image: linear-gradient(to right, #000 30%, transparent 100%);
+            mask-image: linear-gradient(to right, #000 30%, transparent 100%);
+}
+
+/* no margin to put them in on small screens */
+@media (max-width: 62rem) {
+    .side { display: none; }
+}
+
+
+/* Panels animate in only when arriving from a page that has no panels
+   (see the referrer check in <head>). Page-to-page among these five,
+   they are simply already there. */
+
+.sides-enter .side-left {
+    animation: side-in-left 1.5s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+.sides-enter .side-right {
+    animation: side-in-right 1.5s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@keyframes side-in-left {
+    from { opacity: 0; transform: translateX(-3rem); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+/* the right panel is mirrored, so its flip has to stay in every keyframe */
+@keyframes side-in-right {
+    from { opacity: 0; transform: scaleX(-1) translateX(-3rem); }
+    to   { opacity: 1; transform: scaleX(-1) translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sides-enter .side-left,
+    .sides-enter .side-right {
+        animation: none;
     }
 }
 
-/* keep the flip while the reveal animates the slide */
-.ornament.reveal        { transform: translateY(16px) rotate(var(--rot, 0deg)); }
-.ornament.reveal.is-in  { transform: rotate(var(--rot, 0deg)); }
-
 </style>
+
+<script>
+// Decide BEFORE first paint whether the floral panels should animate in.
+// They should when you arrive from the home page or from outside; they
+// should not when moving between two pages that already show them.
+(function () {
+
+    var WITH_PANELS = [
+        'schedule.html', 'lodging.html', 'registry.html',
+        'rsvp.html', 'faqs.html'
+    ];
+
+    var ref = '';
+    try { ref = document.referrer || ''; } catch (e) { ref = ''; }
+
+    var cameFromPanelPage = false;
+
+    if (ref) {
+        var path = ref.split('?')[0].split('#')[0];
+        var file = path.substring(path.lastIndexOf('/') + 1);
+        if (file === '') file = 'index.html';
+        cameFromPanelPage = WITH_PANELS.indexOf(file) !== -1;
+    }
+
+    if (!cameFromPanelPage) {
+        document.documentElement.className += ' sides-enter';
+    }
+})();
+</script>
+
 </head>
 
 <body>
+
+    <div class="side side-left" aria-hidden="true"></div>
+    <div class="side side-right" aria-hidden="true"></div>
 
     <div class="topbar">
         <span>September 5th, 2027</span>
@@ -253,8 +319,6 @@ h2 { font-size: 1.4rem; margin: 0 0 1rem; text-align: center; }
         <a href="rsvp.html">RSVP</a>
         <a href="faqs.html">FAQs</a>
     </nav>
-
-    <div class="ornament ornament-top" aria-hidden="true"></div>
 
 
     <h2>Registry</h2>
@@ -297,8 +361,6 @@ h2 { font-size: 1.4rem; margin: 0 0 1rem; text-align: center; }
 
     </div>
 
-    <div class="ornament ornament-bottom" aria-hidden="true"></div>
-
 <script>
 
 document.getElementById('zelleCopy').addEventListener('click', function () {
@@ -325,7 +387,7 @@ document.getElementById('zelleCopy').addEventListener('click', function () {
     if (!('IntersectionObserver' in window)) return;
 
     var els = Array.prototype.slice.call(
-        document.querySelectorAll('.intro, .gift, .ornament')
+        document.querySelectorAll('.intro, .gift')
     );
     if (!els.length) return;
 
