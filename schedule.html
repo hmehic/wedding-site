@@ -20,11 +20,17 @@
 }
 
 body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    background: #fdfbf8;
     font-family: Georgia, 'Times New Roman', serif;
     line-height: 1.6;
     max-width: 45rem;
     margin: 0 auto;
-    padding: 5rem 1.25rem 2rem;
+    padding: 5rem 1.25rem 0;
 }
 
 img { max-width: 100%; height: auto; }
@@ -56,7 +62,7 @@ h1 {
     font-weight: 400;
     font-size: clamp(3rem, 11vw, 5rem);
     line-height: 1.25;
-    margin: 0 0 1rem;
+    margin: 0;
     text-align: center;
 }
 
@@ -88,7 +94,7 @@ a { color: #b3243a; }
     padding-bottom: 2px;
 }
 
-h2 { font-size: 1.4rem; margin-bottom: 1.5rem; text-align: center; }
+h2 { font-size: 1.4rem; margin: 0 0 1.5rem; text-align: center; }
 
 .schedule { text-align: center; }
 
@@ -97,18 +103,33 @@ h2 { font-size: 1.4rem; margin-bottom: 1.5rem; text-align: center; }
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: #6b6b6b;
+    margin-bottom: 3rem;
+}
+
+/* ---------- timeline ---------- */
+
+.timeline {
+    max-width: 34rem;
+    margin: 0 auto;
+}
+
+.event {
     margin-bottom: 2.5rem;
 }
 
-.event { margin-bottom: 3rem; }
+.event:last-of-type { margin-bottom: 0; }
 
 .event h3 {
     font-size: 1.15rem;
-    margin-bottom: 0.4rem;
+    margin: 0 0 0.4rem;
 }
 
 .event .time {
     margin: 0 0 0.75rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #b3243a;
 }
 
 .event .venue {
@@ -152,16 +173,83 @@ h2 { font-size: 1.4rem; margin-bottom: 1.5rem; text-align: center; }
     padding: 0.65rem 1.4rem;
     border: 1px solid #333;
     border-radius: 3px;
-    background: #fff;
+    background: #fdfbf8;
     color: #333;
     cursor: pointer;
 }
 
-.cal button:hover { background: #f2f2f2; }
+.cal button:hover { background: #f4efe8; }
 
 .placeholder { color: #6b6b6b; }
 
 
+
+
+/* ---------- fade in on scroll ---------- */
+
+.reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reveal.is-in {
+    opacity: 1;
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal, .reveal.is-in {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
+
+
+/* ---------- page ornament ---------- */
+
+.ornament {
+    display: block;
+    width: 100vw;
+    max-width: none;
+    margin-left: calc(50% - 50vw);
+    height: 26px;
+    background: url('images/divider.png') repeat-x center / auto 26px;
+    opacity: 0.67;
+    pointer-events: none;
+}
+
+.ornament { flex: none; }
+
+.ornament-top { margin-bottom: 2.5rem; }
+
+.ornament-bottom {
+    --rot: 180deg;
+    transform: rotate(180deg);
+    margin-top: auto;          /* push to the bottom of the page */
+    /* the 180deg flip reverses these visually:
+       padding-bottom becomes the gap ABOVE the art */
+    padding-bottom: 4rem;
+    padding-top: 0.75rem;
+    background-origin: content-box;
+    background-clip: content-box;
+}
+
+/* the reveal must land on the ornament's own opacity, not 1 */
+.ornament.reveal       { opacity: 0; }
+.ornament.reveal.is-in { opacity: 0.67; }
+
+@media (max-width: 40rem) {
+    .ornament {
+        height: 19px;
+        background-size: auto 19px;
+    }
+}
+
+/* keep the flip while the reveal animates the slide */
+.ornament.reveal        { transform: translateY(16px) rotate(var(--rot, 0deg)); }
+.ornament.reveal.is-in  { transform: rotate(var(--rot, 0deg)); }
 
 </style>
 </head>
@@ -184,11 +272,16 @@ h2 { font-size: 1.4rem; margin-bottom: 1.5rem; text-align: center; }
         <a href="faqs.html">FAQs</a>
     </nav>
 
+    <div class="ornament ornament-top" aria-hidden="true"></div>
+
+
     <h2>Schedule</h2>
 
     <div class="schedule">
 
         <p class="day">Sunday, September 5, 2027</p>
+
+        <div class="timeline">
 
         <div class="event">
             <h3>Ceremony</h3>
@@ -230,11 +323,15 @@ h2 { font-size: 1.4rem; margin-bottom: 1.5rem; text-align: center; }
             <p class="note">Time to dance the night away.</p>
         </div>
 
+        </div>
+
         <div class="cal">
             <button id="ics">Add to calendar</button>
         </div>
 
     </div>
+
+    <div class="ornament ornament-bottom" aria-hidden="true"></div>
 
 <script>
 
@@ -270,6 +367,35 @@ document.getElementById('ics').addEventListener('click', function () {
 
 </script>
 
+
+
+<script>
+(function () {
+
+    if (!('IntersectionObserver' in window)) return;
+
+    var els = Array.prototype.slice.call(
+        document.querySelectorAll('.day, .event, .cal, .ornament')
+    );
+    if (!els.length) return;
+
+    els.forEach(function (el, i) {
+        el.classList.add('reveal');
+        el.style.transitionDelay = Math.min(i, 4) * 0.06 + 's';
+    });
+
+    var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-in');
+                io.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0, rootMargin: '0px' });
+
+    els.forEach(function (el) { io.observe(el); });
+})();
+</script>
 
 </body>
 </html>

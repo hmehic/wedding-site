@@ -20,11 +20,17 @@
 }
 
 body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    background: #fdfbf8;
     font-family: Georgia, 'Times New Roman', serif;
     line-height: 1.6;
     max-width: 45rem;
     margin: 0 auto;
-    padding: 5rem 1.25rem 2rem;
+    padding: 5rem 1.25rem 0;
 }
 
 img { max-width: 100%; height: auto; }
@@ -56,7 +62,7 @@ h1 {
     font-weight: 400;
     font-size: clamp(3rem, 11vw, 5rem);
     line-height: 1.25;
-    margin: 0 0 1rem;
+    margin: 0;
     text-align: center;
 }
 
@@ -88,7 +94,7 @@ a { color: #b3243a; }
     padding-bottom: 2px;
 }
 
-h2 { font-size: 1.4rem; margin-bottom: 1.5rem; text-align: center; }
+h2 { font-size: 1.4rem; margin: 0 0 1.5rem; text-align: center; }
 
 .faq { text-align: center; }
 
@@ -104,6 +110,73 @@ h2 { font-size: 1.4rem; margin-bottom: 1.5rem; text-align: center; }
 .placeholder { color: #6b6b6b; }
 
 
+
+
+/* ---------- fade in on scroll ---------- */
+
+.reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reveal.is-in {
+    opacity: 1;
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal, .reveal.is-in {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
+
+
+/* ---------- page ornament ---------- */
+
+.ornament {
+    display: block;
+    width: 100vw;
+    max-width: none;
+    margin-left: calc(50% - 50vw);
+    height: 26px;
+    background: url('images/divider.png') repeat-x center / auto 26px;
+    opacity: 0.67;
+    pointer-events: none;
+}
+
+.ornament { flex: none; }
+
+.ornament-top { margin-bottom: 2.5rem; }
+
+.ornament-bottom {
+    --rot: 180deg;
+    transform: rotate(180deg);
+    margin-top: auto;          /* push to the bottom of the page */
+    /* the 180deg flip reverses these visually:
+       padding-bottom becomes the gap ABOVE the art */
+    padding-bottom: 4rem;
+    padding-top: 0.75rem;
+    background-origin: content-box;
+    background-clip: content-box;
+}
+
+/* the reveal must land on the ornament's own opacity, not 1 */
+.ornament.reveal       { opacity: 0; }
+.ornament.reveal.is-in { opacity: 0.67; }
+
+@media (max-width: 40rem) {
+    .ornament {
+        height: 19px;
+        background-size: auto 19px;
+    }
+}
+
+/* keep the flip while the reveal animates the slide */
+.ornament.reveal        { transform: translateY(16px) rotate(var(--rot, 0deg)); }
+.ornament.reveal.is-in  { transform: rotate(var(--rot, 0deg)); }
 
 </style>
 </head>
@@ -126,6 +199,9 @@ h2 { font-size: 1.4rem; margin-bottom: 1.5rem; text-align: center; }
         <a href="faqs.html" aria-current="page">FAQs</a>
     </nav>
 
+    <div class="ornament ornament-top" aria-hidden="true"></div>
+
+
     <h2>FAQs</h2>
 
     <div class="faq">
@@ -136,6 +212,8 @@ h2 { font-size: 1.4rem; margin-bottom: 1.5rem; text-align: center; }
             We suggest dresses or jumpsuits for women and dress pants
             with a button-down shirt for men. Both the ceremony and
             reception will be outside. Please, no jeans and no hats.
+            We also kindly ask that guests leave white and ivory to
+            the bride.
         </p>
 
         <h3>Can I bring a plus one?</h3>
@@ -157,21 +235,49 @@ h2 { font-size: 1.4rem; margin-bottom: 1.5rem; text-align: center; }
             Yes! Please refer to the lodging tab for recommendations.
         </p>
 
-        <h3>I have a food allergy, can I make a special request?</h3>
+        <h3>Does the venue have parking?</h3>
         <p>
-            Yes, we are happy to accommodate most food allergies and
-            dietary restrictions! Please ensure you let us know in
-            advance.
+            Yes, the venue can hold about 70&ndash;80 vehicles.
         </p>
 
         <h3>I still have questions, what is the best way to contact you?</h3>
         <p>
-            For any questions or concerns, please refer to the hosts'
-            contact information on your invitation.
+            <a href="mailto:hmehic13@gmail.com">Click here to email us</a>
         </p>
 
     </div>
 
+
+
+    <div class="ornament ornament-bottom" aria-hidden="true"></div>
+
+<script>
+(function () {
+
+    if (!('IntersectionObserver' in window)) return;
+
+    var els = Array.prototype.slice.call(
+        document.querySelectorAll('.faq h3, .faq h3 + p, .ornament')
+    );
+    if (!els.length) return;
+
+    els.forEach(function (el, i) {
+        el.classList.add('reveal');
+        el.style.transitionDelay = Math.min(i, 4) * 0.06 + 's';
+    });
+
+    var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-in');
+                io.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0, rootMargin: '0px' });
+
+    els.forEach(function (el) { io.observe(el); });
+})();
+</script>
 
 </body>
 </html>
