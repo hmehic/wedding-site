@@ -204,8 +204,12 @@ img {
 .story {
     position: relative;
     z-index: 1;
+    box-sizing: border-box;
     text-align: center;
-    max-width: 36rem;
+    /* .story-wrap is full-bleed, so the text has to supply its own
+       side padding or it runs into the screen edges on phones */
+    padding: 0 1.25rem;
+    max-width: 38.5rem;
     margin: 0 auto;
 }
 
