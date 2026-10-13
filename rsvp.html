@@ -401,8 +401,8 @@ a { transition: color 0.2s ease; }
 (function () {
 
     var WITH_PANELS = [
-        'schedule.html', 'lodging.html', 'registry.html',
-        'rsvp.html', 'faqs.html'
+        'schedule', 'lodging', 'registry',
+        'rsvp', 'faqs'
     ];
 
     var ref = '';
@@ -412,8 +412,8 @@ a { transition: color 0.2s ease; }
 
     if (ref) {
         var path = ref.split('?')[0].split('#')[0];
-        var file = path.substring(path.lastIndexOf('/') + 1);
-        if (file === '') file = 'index.html';
+        var file = path.substring(path.lastIndexOf('/') + 1).replace(/\.html$/, '');
+        if (file === '') file = 'index';
         cameFromPanelPage = WITH_PANELS.indexOf(file) !== -1;
     }
 
@@ -438,12 +438,12 @@ a { transition: color 0.2s ease; }
     <h1>Shelby &amp; Hamza</h1>
 
     <nav class="nav">
-        <a href="index.html">Home</a>
-        <a href="schedule.html">Schedule</a>
-        <a href="lodging.html">Lodging</a>
-        <a href="registry.html">Registry</a>
-        <a href="rsvp.html" aria-current="page">RSVP</a>
-        <a href="faqs.html">FAQs</a>
+        <a href="/">Home</a>
+        <a href="/schedule">Schedule</a>
+        <a href="/lodging">Lodging</a>
+        <a href="/registry">Registry</a>
+        <a href="/rsvp" aria-current="page">RSVP</a>
+        <a href="/faqs">FAQs</a>
     </nav>
 
 
@@ -678,7 +678,7 @@ submitBtn.addEventListener("click", async function () {
 // then navigate, so it eases away instead of vanishing.
 (function () {
 
-    var HOME = 'index.html';
+    var HOME = '/';
     var band = document.querySelector('.topfloral');
     if (!band) return;
 
